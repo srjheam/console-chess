@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Board;
+using static Screen.GraphicEngine;
 
 namespace ConsoleChess
 {
@@ -6,7 +7,9 @@ namespace ConsoleChess
     {
         static void Main()
         {
-            Console.WriteLine("Hello World!");
+            var gameBoard = new ChessBoard();
+
+            PrintBoard(gameBoard, 4);
         }
     }
 }
