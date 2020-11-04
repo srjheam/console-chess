@@ -38,8 +38,8 @@ namespace Board
         }
 
         /// <summary>
-        /// Place the game pieces in the board.
+        /// Place the pieces in their initial positions on the board.
         /// </summary>
-        protected abstract void PlacePieces();
+        protected abstract void SetupBoard();
     }
 }

@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - The ability to receive, interpret and convert the position of the board informed by the user.
 
+### Changed
+
+- The method name from Board.PlacePieces() to SetupPieces().
+
 ## [0.0.2] - 2020-11-02
 
 ### Added

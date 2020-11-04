@@ -15,13 +15,11 @@ namespace Board
         public ChessBoard()
             : base(8, 8)
         {
-            PlacePieces();            
+            SetupBoard();            
         }
 
-        /// <summary>
-        /// Place the chess pieces in the board;
-        /// </summary>
-        sealed protected override void PlacePieces()
+        /// <inheritdoc/>
+        sealed protected override void SetupBoard()
         {
             // Start to place black side pieces
             Squares[0, 0] = new Rook(Team.Black);
