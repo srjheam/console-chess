@@ -11,15 +11,9 @@ namespace Board
         /// <value>Contains the pieces in the board.</value>
         public readonly Piece[,] Squares;
         /// <value>Gets the number of columns in the board.</value>
-        public int Columns
-        {
-            get => Squares.GetLength(1);
-        }
+        public readonly int Columns;
         /// <value>Gets the number of rows in the board.</value>
-        public int Rows
-        {
-            get => Squares.GetLength(0);
-        }
+        public readonly int Rows;
 
         /// <summary>
         /// Base constructor for a new generic board.
@@ -35,6 +29,8 @@ namespace Board
             }
 
             Squares = new Piece[height, width];
+            Columns = width;
+            Rows = height;
         }
 
         /// <summary>
