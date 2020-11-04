@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [next_change] - 2020-11-xx
+
+### Added
+
+- The ability to receive, interpret and convert the position of the board informed by the user.
+
 ## [0.0.2] - 2020-11-02
 
 ### Added
