@@ -29,7 +29,7 @@ namespace Board
             // Checks whether the parameters are valid.
             if (row <= 0)
             {
-                throw new ArgumentOutOfRangeException("A Board.BoardPosition.Row cannot be less than or equal to zero.");
+                throw new ArgumentOutOfRangeException("A Board.BoardPosition.Row cannot be less than or equal to zero.", (Exception)null);
             }
             else if (!Char.IsLetter(column))
             {

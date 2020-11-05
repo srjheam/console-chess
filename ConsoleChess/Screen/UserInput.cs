@@ -37,7 +37,7 @@ namespace Screen
         /// <returns>True if <paramref name="input"/> is a <see cref="BoardPosition"/>; otherwise, returns false.</returns>
         public static bool IsBoardPosition(string input)
         {
-            return Char.IsLetter(input[0]) && int.TryParse(input[1..], out _);
+            return !String.IsNullOrEmpty(input) && Char.IsLetter(input[0]) && int.TryParse(input[1..], out _);
         }
 
         /// <summary>

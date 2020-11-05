@@ -1,5 +1,7 @@
 ﻿using Board;
 
+using Pieces;
+
 using Screen;
 using static Screen.GraphicEngine;
 
@@ -18,34 +20,73 @@ namespace ConsoleChess
                 Console.Clear();
                 PrintBoard(gameBoard, 4);
 
-                BoardPosition boardPosition;
-                Console.Write("Type a board position: ");
-                try
+                BoardPosition originPosition;
+                do
                 {
-                    boardPosition = UserInput.ConvertToBoardPosition(Console.ReadLine());
-                }
-                catch (ArgumentException e)
-                {
-                    Console.Clear();
-                    Console.WriteLine(e.Message);
-                    Console.ReadKey(true);
-                    continue;
-                }
+                    Console.Write("Select a piece: ");
+                    try
+                    {
+                        originPosition = UserInput.ConvertToBoardPosition(Console.ReadLine());
 
+                        if (gameBoard.GetPiece(originPosition) == null)
+                        {
+                            throw new ArgumentNullException("You cannot try to select a empty space.", (Exception)null);
+                        }
+                    }
+                    catch (ArgumentException e)
+                    {
+                        // Clears the line
+                        Console.SetCursorPosition(0, Console.CursorTop - 1);
+                        Console.Write(new string(' ', Console.BufferWidth));
+                        Console.SetCursorPosition(0, Console.CursorTop);
 
-                Console.WriteLine();
-                if (UserInput.IsValidBoardPosition(boardPosition, gameBoard))
+                        Console.Write(e.Message);
+                        Console.ReadKey(true);
+
+                        // Clears the line
+                        Console.SetCursorPosition(0, Console.CursorTop);
+                        Console.Write(new string(' ', Console.BufferWidth));
+                        Console.SetCursorPosition(0, Console.CursorTop);
+
+                        continue;
+                    }
+                    break;
+                } while (true);
+
+                BoardPosition targetPosition;
+                do
                 {
-                    Console.WriteLine("You've typed the board position: " + boardPosition);
-                    Console.Write("Which represents the position [{0}, {1}] in the game board's based-zero array.",
-                        boardPosition.ToArrayPosition(gameBoard).X,
-                        boardPosition.ToArrayPosition(gameBoard).Y);
-                }
-                else
-                {
-                    Console.WriteLine("You've type an invalid board position.");
-                }
-                Console.ReadKey(true);
+                    Console.Write("Select the target: ");
+                    try
+                    {
+                        targetPosition = UserInput.ConvertToBoardPosition(Console.ReadLine());
+
+                        if (!UserInput.IsValidBoardPosition(targetPosition, gameBoard))
+                        {
+                            throw new ArgumentException("The position informed doesn't belong to this board.");
+                        }
+                    }
+                    catch (ArgumentException e)
+                    {
+                        // Clears the line
+                        Console.SetCursorPosition(0, Console.CursorTop - 1);
+                        Console.Write(new string(' ', Console.BufferWidth));
+                        Console.SetCursorPosition(0, Console.CursorTop);
+
+                        Console.Write(e.Message);
+                        Console.ReadKey(true);
+
+                        // Clears the line
+                        Console.SetCursorPosition(0, Console.CursorTop);
+                        Console.Write(new string(' ', Console.BufferWidth));
+                        Console.SetCursorPosition(0, Console.CursorTop);
+
+                        continue;
+                    }
+                    break;
+                } while (true);
+
+                gameBoard.MovePiece(originPosition, targetPosition);
             } while (true);
 
         }

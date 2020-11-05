@@ -66,7 +66,7 @@ namespace Screen
                 // Pieces in this line
                 for (int column = 0; column < board.Columns; column++)
                 {
-                    Console.Write(board.Squares[row, column] == null ? "-" : board.Squares[row, column].ToString());
+                    Console.Write(board.GetPiece(row, column) == null ? "-" : board.GetPiece(row, column).ToString());
                 }
 
                 // RIGHT EDGE with row indicator
