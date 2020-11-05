@@ -8,15 +8,16 @@ namespace Pieces
     abstract class Piece
     {
         /// <summary>
-        /// Symbol of the piece on console.
-        /// </summary>
-        /// <value>Gets the symbol of the piece.</value>
-        protected abstract string Symbol { get; }
-        /// <summary>
         /// Team of the piece.
         /// </summary>
         /// <value>Gets the team of the piece.</value>
         public readonly Team Team;
+        
+        /// <summary>
+        /// Symbol of the piece on console.
+        /// </summary>
+        /// <value>Gets the symbol of the piece.</value>
+        protected abstract string Symbol { get; }
 
         /// <summary>
         /// Base contructor for a new generic piece.
