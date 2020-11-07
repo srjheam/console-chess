@@ -1,7 +1,6 @@
 ﻿using Screen;
 
 using System;
-using System.Drawing;
 
 namespace Board
 {
@@ -44,9 +43,9 @@ namespace Board
         /// Converts this instance to its equivalent array position.
         /// </summary>
         /// <param name="board"></param>
-        /// <returns>An <see cref="System.Drawing.Point"/> that represents an position in a based-zero array</returns>
+        /// <returns>A <see cref="TwoDimensionPosition"/> that represents a position in a based-zero array, where the y-axis is for the array row and x-axis is for the array column.</returns>
         /// <exception cref="ArgumentException">Thrown when this instance of <see cref="BoardPosition"/> does note belong to the <paramref name="board"/> parameter.</exception>
-        public Point ToArrayPosition(Board board)
+        public TwoDimensionPosition ToArrayPosition(Board board)
         {
             int arrayRow = board.Rows - Row;
             int arrayColumn = (int)Column - 97;
@@ -56,7 +55,7 @@ namespace Board
                 throw new ArgumentException("This BoardPosition does not belong to the Board informed in the parameters.");
             }
             
-            return new Point(arrayRow, arrayColumn);
+            return new TwoDimensionPosition(arrayColumn, arrayRow);
         }
 
         /// <summary>

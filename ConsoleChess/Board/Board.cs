@@ -46,7 +46,7 @@ namespace Board
         {
             var toArrayPosition = boardPosition.ToArrayPosition(this);
             
-            return squares[toArrayPosition.X, toArrayPosition.Y];
+            return squares[toArrayPosition.Y, toArrayPosition.X];
         }
 
         /// <summary>
@@ -95,7 +95,7 @@ namespace Board
             var originToArray = origin.ToArrayPosition(this);
             var targetToArray = target.ToArrayPosition(this);
 
-            MovePiece(originToArray.X, originToArray.Y, targetToArray.X, targetToArray.Y);
+            MovePiece(originToArray.Y, originToArray.X, targetToArray.Y, targetToArray.X);
         }
 
         /// <summary>
