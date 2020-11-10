@@ -1,4 +1,6 @@
-﻿using Pieces.Enum;
+﻿using Board.Enum;
+
+using Pieces.Enum;
 
 namespace Pieces
 {
@@ -8,12 +10,13 @@ namespace Pieces
     sealed class Knight : Piece
     {
         sealed protected override string Symbol => "N";
+        sealed protected override Movement Movement => PieceMovement.LShapeMove;
 
         /// <summary>
-        /// Contructor for a new <see cref="Knight"/>./>
+        /// Contructor for a new <see cref="Knight"/>.
         /// </summary>
-        /// <param name="team"><inheritdoc/></param>
-        public Knight(Team team)
-            : base(team) { }
+        /// <inheritdoc/>
+        public Knight(Team team, Board.Board board, BoardSide side)
+            : base(team, board, side) { }
     }
 }

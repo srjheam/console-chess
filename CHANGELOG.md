@@ -10,6 +10,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - TwoDimensionPosition struct to represent a position in 2D spaces, focused on positions within arrays.
+- A reference on each piece of the Board to which it belongs.
+- BoardSide enum to find out which side the piece is from.
+- An counter for the number of times a piece has moved.
+- A property to get the position of the piece on the board to which it belongs.
+- PieceMovement static class to handle all types of movements.
+- Piece.PossibleTargets() that shows all targets of the piece by its movement rule.
 
 ### Changed
 

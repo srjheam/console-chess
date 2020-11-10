@@ -2,9 +2,6 @@
 
 using Pieces;
 
-using System;
-using System.Linq;
-
 namespace Board
 {
     /// <summary>
@@ -42,11 +39,19 @@ namespace Board
         /// </summary>
         /// <param name="boardPosition">The position to get its value in the board.</param>
         /// <returns>Whatever is in <paramref name="boardPosition"/> in the board.</returns>
-        public Piece GetPiece(BoardPosition boardPosition)
+        public Piece GetPiece(in BoardPosition boardPosition)
         {
-            var toArrayPosition = boardPosition.ToArrayPosition(this);
-            
-            return squares[toArrayPosition.Y, toArrayPosition.X];
+            return GetPiece(boardPosition.ToArrayPosition(this));
+        }
+
+        /// <summary>
+        /// Gets whatever is in the position informed by the parameters.
+        /// </summary>
+        /// <param name="orderedPair">The position to get its value in the board.</param>
+        /// <returns>Whatever is in the position <see cref="squares"/>[<paramref name="row"/>, <paramref name="column"/>].</returns>
+        public Piece GetPiece(in TwoDimensionPosition orderedPair)
+        {
+            return GetPiece(orderedPair.Y, orderedPair.X);
         }
 
         /// <summary>
@@ -90,7 +95,7 @@ namespace Board
         /// </summary>
         /// <param name="origin">The origin piece.</param>
         /// <param name="target">The target position.</param>
-        public void MovePiece(BoardPosition origin, BoardPosition target)
+        public void MovePiece(in BoardPosition origin, in BoardPosition target)
         {
             var originToArray = origin.ToArrayPosition(this);
             var targetToArray = target.ToArrayPosition(this);

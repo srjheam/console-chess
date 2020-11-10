@@ -1,4 +1,6 @@
-﻿using Pieces.Enum;
+﻿using Board.Enum;
+
+using Pieces.Enum;
 
 namespace Pieces
 {
@@ -8,12 +10,13 @@ namespace Pieces
     sealed class Bishop : Piece
     {
         sealed protected override string Symbol => "B";
+        sealed protected override Movement Movement => PieceMovement.DiagonalMove;
 
         /// <summary>
-        /// Contructor for a new <see cref="Bishop"/>./>
+        /// Contructor for a new <see cref="Bishop"/>.
         /// </summary>
-        /// <param name="team"><inheritdoc/></param>
-        public Bishop(Team team)
-            : base(team) { }
+        /// <inheritdoc/>
+        public Bishop(Team team, Board.Board board, BoardSide side)
+            : base(team, board, side) { }
     }
 }
