@@ -53,6 +53,9 @@ namespace ConsoleChess
                     break;
                 } while (true);
 
+                Console.Clear();
+                PrintBoard(gameBoard, gameBoard.GetPiece(originPosition).PossibleTargets(), 4);
+                Console.WriteLine($"Select a piece: {originPosition}");
                 BoardPosition targetPosition;
                 do
                 {

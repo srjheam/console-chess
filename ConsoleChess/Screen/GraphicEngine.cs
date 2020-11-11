@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Pieces;
+
+using System;
 using System.Linq;
 
 namespace Screen
@@ -8,14 +10,29 @@ namespace Screen
     /// </summary>
     static class GraphicEngine
     {
+        /// <value>Gets the highlight background color.</value>
+        private const ConsoleColor highlightBackground = ConsoleColor.DarkGray;
+
         /// <summary>
         /// Prints an board to the console with all letter and row indicators.
         /// </summary>
         /// <param name="board">Board to be printed.</param>
+        /// <param name="highlightedSquares">An array of booleans where true positions means a board square to be highlighted.</param>
         /// <param name="spacesAtLeft">Distance between <see cref="System.Console.CursorLeft"/> and the column of the buffer area where each <paramref name="board"/>'s row begins to be written.</param>
         public static void PrintBoard(Board.Board board, int spacesAtLeft)
         {
-            /* This function output (example for a 10x10 board and spacesAtLeft = 3, on the board '-' means board.Square without piece in position):
+            PrintBoard(board, new bool[board.Rows, board.Columns], spacesAtLeft);
+        }
+        
+        /// <summary>
+        /// Prints an board to the console with all letter and row indicators.
+        /// </summary>
+        /// <param name="board">Board to be printed.</param>
+        /// <param name="highlightedSquares">An array of booleans where true positions means a board square to be highlighted.</param>
+        /// <param name="spacesAtLeft">Distance between <see cref="System.Console.CursorLeft"/> and the column of the buffer area where each <paramref name="board"/>'s row begins to be written.</param>
+        public static void PrintBoard(Board.Board board, in bool[,] highlightedSquares, int spacesAtLeft)
+        {
+            /* This function output (example for a 10x10 board and spacesAtLeft = 3, on the board '-' means a null board square):
              *       ABCDEFGH
              *      +========+
              *    10|--------|10
@@ -62,11 +79,11 @@ namespace Screen
                     new string(' ', spacesAtLeft)
                     + rowIndicator.ToString().PadLeft(greatestRowNumberLength)
                     + "|");
-                
+
                 // Pieces in this line
                 for (int column = 0; column < board.Columns; column++)
                 {
-                    Console.Write(board.GetPiece(row, column) == null ? "-" : board.GetPiece(row, column).ToString());
+                    PrintBoardSquare(board.GetPiece(row, column), highlightedSquares[row, column]);
                 }
 
                 // RIGHT EDGE with row indicator
@@ -88,6 +105,25 @@ namespace Screen
                 + String.Concat(
                     Enumerable.Range('\u0041', board.Columns)
                     .Select(c => (char)c)));
+        }
+
+        /// <summary>
+        /// Prints a board square and can also highlight it when needed.
+        /// </summary>
+        /// <param name="p">The content of the board square to be printed.</param>
+        /// <param name="highlight">If true it colors the background of the board square with a highlight color; otherwise, no color changes.</param>
+        private static void PrintBoardSquare(Piece p, bool highlight = false)
+        {
+            ConsoleColor tmp = Console.BackgroundColor;
+
+            if (highlight)
+            {
+                Console.BackgroundColor = highlightBackground;
+            }
+
+            Console.Write(p is null ? "-" : p.ToString());
+
+            Console.BackgroundColor = tmp;
         }
     }
 }
