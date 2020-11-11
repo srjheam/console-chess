@@ -1,4 +1,5 @@
-﻿using Pieces;
+﻿using Board;
+using Pieces;
 using Pieces.Enum;
 
 using System;
@@ -13,6 +14,23 @@ namespace Screen
     {
         /// <value>Gets the highlight background color.</value>
         private const ConsoleColor highlightBackground = ConsoleColor.DarkGray;
+
+        /// <summary>
+        /// Prints a report regarding the captured pieces by each team of the board.
+        /// </summary>
+        /// <param name="board">The board which has the captured pieces.</param>
+        public static void CapturedPiecesReport(ChessBoard board)
+        {
+            var tmp = Console.ForegroundColor;
+            
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine($"Captured black pieces: {{{String.Join(", ", board.capturedBlackPieces)}}}");
+
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine($"Captured white pieces: {{{String.Join(", ", board.capturedWhitePieces)}}}");
+
+            Console.ForegroundColor = tmp;
+        }
 
         /// <summary>
         /// Prints an board to the console with all letter and row indicators.

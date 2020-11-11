@@ -18,6 +18,9 @@ namespace ConsoleChess
             do
             {
                 Console.Clear();
+                CapturedPiecesReport(gameBoard);
+                Console.WriteLine();
+
                 PrintBoard(gameBoard, 4);
 
                 BoardPosition originPosition;
@@ -60,8 +63,12 @@ namespace ConsoleChess
                 var possibleTargets = gameBoard.GetPiece(originPosition).PossibleTargets();
 
                 Console.Clear();
+                CapturedPiecesReport(gameBoard);
+                Console.WriteLine();
+
                 PrintBoard(gameBoard, possibleTargets, 4);
                 Console.WriteLine($"Select a piece: {originPosition}");
+
                 BoardPosition targetPosition;
                 do
                 {
