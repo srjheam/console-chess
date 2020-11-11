@@ -25,5 +25,23 @@
 
             return result;
         }
+
+        /// <summary>
+        /// Cycles through the two-dimensional Boolean array looking for a true value.
+        /// </summary>
+        /// <param name="obj">The two-dimensional Boolean array where a true value will be searched.</param>
+        /// <returns>True if the array has at least one true value; otherwise, it returns false.</returns>
+        public static bool HasTrue(this bool[,] obj)
+        {
+            foreach (var boolean in obj)
+            {
+                if (boolean)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
     }
 }

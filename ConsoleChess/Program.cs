@@ -1,6 +1,6 @@
 ﻿using Board;
 
-using Pieces;
+using Extensions;
 
 using Screen;
 using static Screen.GraphicEngine;
@@ -28,9 +28,13 @@ namespace ConsoleChess
                     {
                         originPosition = UserInput.ConvertToBoardPosition(Console.ReadLine());
 
-                        if (gameBoard.GetPiece(originPosition) == null)
+                        if (gameBoard.GetPiece(originPosition) is null)
                         {
                             throw new ArgumentNullException("You cannot try to select a empty space.", (Exception)null);
+                        }
+                        else if (!gameBoard.GetPiece(originPosition).PossibleTargets().HasTrue())
+                        {
+                            throw new ArgumentException($"The selected a piece {gameBoard.GetPiece(originPosition)} hasn't any avaliable movement.");
                         }
                     }
                     catch (ArgumentException e)
@@ -53,8 +57,10 @@ namespace ConsoleChess
                     break;
                 } while (true);
 
+                var possibleTargets = gameBoard.GetPiece(originPosition).PossibleTargets();
+
                 Console.Clear();
-                PrintBoard(gameBoard, gameBoard.GetPiece(originPosition).PossibleTargets(), 4);
+                PrintBoard(gameBoard, possibleTargets, 4);
                 Console.WriteLine($"Select a piece: {originPosition}");
                 BoardPosition targetPosition;
                 do
@@ -66,7 +72,14 @@ namespace ConsoleChess
 
                         if (!UserInput.IsValidBoardPosition(targetPosition, gameBoard))
                         {
-                            throw new ArgumentException("The position informed doesn't belong to this board.");
+                            throw new ArgumentException("The informed position doesn't belong to this board.");
+                        }
+
+                        var targetArrayPosition = targetPosition.ToArrayPosition(gameBoard);
+
+                        if (!possibleTargets[targetArrayPosition.Y, targetArrayPosition.X])
+                        {
+                            throw new ArgumentException("The informed position isn't a possible target for the selected piece.");
                         }
                     }
                     catch (ArgumentException e)

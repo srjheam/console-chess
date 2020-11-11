@@ -16,10 +16,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - A property to get the position of the piece on the board to which it belongs.
 - PieceMovement static class to handle all types of movements.
 - Piece.PossibleTargets() that shows all targets of the piece by its movement rule.
+- Capability to highlight all the possible targets for a piece on the board.
 
 ### Changed
 
 - System.Drawing.Point has been replaced by TwoDimensionPosition struct.
+- Now the movement of the piece is restricted by the movement rule of each piece.
 
 ### Removed
 
