@@ -1,9 +1,9 @@
 ﻿namespace Extensions
 {
     /// <summary>
-    /// TODO: DOC
+    /// Contains all the Boolean extension methods.
     /// </summary>
-    static class BoolExtensions
+    static class BooleanExtensions
     {
         /// <summary>
         /// Given two bool[*,*], it returns the intersection between them where each element is the OR operator applied in both arrays elements in the same index.

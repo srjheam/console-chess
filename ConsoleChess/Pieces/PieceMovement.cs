@@ -394,15 +394,17 @@ namespace Pieces
              *  5   2
              *   4 3
              */
-            var targetsSet = new HashSet<TwoDimensionPosition>();
-            targetsSet.Add(new TwoDimensionPosition(position.X + 1, position.Y - 2)); // 0
-            targetsSet.Add(new TwoDimensionPosition(position.X + 2, position.Y - 1)); // 1
-            targetsSet.Add(new TwoDimensionPosition(position.X + 2, position.Y + 1)); // 2
-            targetsSet.Add(new TwoDimensionPosition(position.X + 1, position.Y + 2)); // 3
-            targetsSet.Add(new TwoDimensionPosition(position.X - 1, position.Y + 2)); // 4
-            targetsSet.Add(new TwoDimensionPosition(position.X - 2, position.Y + 1)); // 5
-            targetsSet.Add(new TwoDimensionPosition(position.X - 2, position.Y - 1)); // 6
-            targetsSet.Add(new TwoDimensionPosition(position.X - 1, position.Y - 2)); // 7
+            var targetsSet = new HashSet<TwoDimensionPosition>
+            {
+                new TwoDimensionPosition(position.X + 1, position.Y - 2), // 0
+                new TwoDimensionPosition(position.X + 2, position.Y - 1), // 1
+                new TwoDimensionPosition(position.X + 2, position.Y + 1), // 2
+                new TwoDimensionPosition(position.X + 1, position.Y + 2), // 3
+                new TwoDimensionPosition(position.X - 1, position.Y + 2), // 4
+                new TwoDimensionPosition(position.X - 2, position.Y + 1), // 5
+                new TwoDimensionPosition(position.X - 2, position.Y - 1), // 6
+                new TwoDimensionPosition(position.X - 1, position.Y - 2) // 7
+            };
             #endregion
 
             #region Filtering Targets
