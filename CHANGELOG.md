@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - PieceMovement static class to handle all types of movements.
 - Piece.PossibleTargets() that shows all targets of the piece by its movement rule.
 - Capability to highlight all the possible targets for a piece on the board.
+- Now the pieces can capture enemy pieces.
 
 ### Changed
 

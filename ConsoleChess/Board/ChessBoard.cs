@@ -1,6 +1,9 @@
 ﻿using Board.Enum;
+
 using Pieces;
 using Pieces.Enum;
+
+using System.Collections.Generic;
 
 namespace Board
 {
@@ -10,21 +13,39 @@ namespace Board
     /// <inheritdoc/>
     sealed class ChessBoard : Board
     {
+        /// <value>Contains all the captured black pieces.</value>
+        public readonly List<Piece> capturedBlackPieces = new List<Piece>();
+        /// <value>Contains all the captured white pieces.</value>
+        public readonly List<Piece> capturedWhitePieces = new List<Piece>();
+
         /// <summary>
         /// Base constructor for a new standard chess board.
         /// </summary>
         public ChessBoard()
             : base(8, 8)
         {
-            SetupBoard();            
+            SetupBoard();
         }
 
         sealed public override void MovePiece(int originRow, int originColumn, int targetRow, int targetColumn)
         {
             var origin = RemovePiece(originRow, originColumn);
+            var target = GetPiece(targetRow, targetColumn);
 
+            if (!(target is null))
+            {
+                switch (target.Team)
+                {
+                    case Team.Black:
+                        capturedBlackPieces.Add(target);
+                        break;
+                    case Team.White:
+                        capturedWhitePieces.Add(target);
+                        break;
+                }
+            }
+            
             origin.Move();
-
             PlacePiece(origin, targetRow, targetColumn);
         }
 
