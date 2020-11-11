@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - System.Drawing.Point has been replaced by TwoDimensionPosition struct.
 - Now the movement of the piece is restricted by the movement rule of each piece.
+- Each Piece.Team now has a different Console.ForegroundColor when printing it.
 
 ### Removed
 

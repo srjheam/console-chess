@@ -1,4 +1,5 @@
 ﻿using Pieces;
+using Pieces.Enum;
 
 using System;
 using System.Linq;
@@ -117,13 +118,41 @@ namespace Screen
             ConsoleColor tmp = Console.BackgroundColor;
 
             if (highlight)
-            {
                 Console.BackgroundColor = highlightBackground;
-            }
 
-            Console.Write(p is null ? "-" : p.ToString());
+            PrintPiece(p);
 
             Console.BackgroundColor = tmp;
+        }
+
+        /// <summary>
+        /// Prints a piece.
+        /// </summary>
+        /// <remarks>
+        /// This method can colors piece's foreground with different colors for different Piece.Team.
+        /// </remarks>
+        /// <param name="p">The piece to be printed.</param>
+        private static void PrintPiece(Piece p)
+        {
+            if (p is null)
+            {
+                Console.Write('-');
+            }
+            else
+            {
+                var tmp = Console.ForegroundColor;
+
+                Console.ForegroundColor = p.Team switch
+                {
+                    Team.Black => ConsoleColor.Yellow,
+                    Team.White => ConsoleColor.White,
+                    _ => throw new NotImplementedException("Unexpected Piece.Team received. Color not implemented yet.")
+                };
+
+                Console.Write(p);
+
+                Console.ForegroundColor = tmp;
+            }
         }
     }
 }
