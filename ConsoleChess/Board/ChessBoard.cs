@@ -13,10 +13,8 @@ namespace Board
     /// <inheritdoc/>
     sealed class ChessBoard : Board
     {
-        /// <value>Contains all the captured black pieces.</value>
-        public readonly List<Piece> capturedBlackPieces = new List<Piece>();
-        /// <value>Contains all the captured white pieces.</value>
-        public readonly List<Piece> capturedWhitePieces = new List<Piece>();
+        /// <value>Gets the captured pieces during this match.</value>
+        public List<Piece> CapturedPieces { get; } = new List<Piece>();
 
         /// <summary>
         /// Base constructor for a new standard chess board.
@@ -30,20 +28,10 @@ namespace Board
         sealed public override void MovePiece(int originRow, int originColumn, int targetRow, int targetColumn)
         {
             var origin = RemovePiece(originRow, originColumn);
-            var target = GetPiece(targetRow, targetColumn);
+            var target = RemovePiece(targetRow, targetColumn);
 
             if (!(target is null))
-            {
-                switch (target.Team)
-                {
-                    case Team.Black:
-                        capturedBlackPieces.Add(target);
-                        break;
-                    case Team.White:
-                        capturedWhitePieces.Add(target);
-                        break;
-                }
-            }
+                CapturedPieces.Add(target);
             
             origin.Move();
             PlacePiece(origin, targetRow, targetColumn);

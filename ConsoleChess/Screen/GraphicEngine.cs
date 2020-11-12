@@ -1,8 +1,8 @@
-﻿using Board;
-using Pieces;
+﻿using Pieces;
 using Pieces.Enum;
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Screen
@@ -19,15 +19,17 @@ namespace Screen
         /// Prints a report regarding the captured pieces by each team of the board.
         /// </summary>
         /// <param name="board">The board which has the captured pieces.</param>
-        public static void CapturedPiecesReport(ChessBoard board)
+        public static void CapturedPiecesReport(List<Piece> capturedPieces)
         {
             var tmp = Console.ForegroundColor;
-            
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine($"Captured black pieces: {{{String.Join(", ", board.capturedBlackPieces)}}}");
 
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine($"Captured white pieces: {{{String.Join(", ", board.capturedWhitePieces)}}}");
+            var teams = capturedPieces.GroupBy(x => x.Team).OrderBy(x => x.Key);
+
+            foreach (var team in teams)
+            {
+                Console.ForegroundColor = GetTeamColors(team.Key).ForegroundColor;
+                Console.WriteLine($"Captured {team.Key.ToString().ToLower()} pieces: {{{String.Join(", ", team)}}}");
+            }
 
             Console.ForegroundColor = tmp;
         }
@@ -44,7 +46,7 @@ namespace Screen
         }
         
         /// <summary>
-        /// Prints an board to the console with all letter and row indicators.
+        /// Prints an board to the console with all letter, row indicators and highlighting selected board squares.
         /// </summary>
         /// <param name="board">Board to be printed.</param>
         /// <param name="highlightedSquares">An array of booleans where true positions means a board square to be highlighted.</param>
@@ -147,7 +149,7 @@ namespace Screen
         /// Prints a piece.
         /// </summary>
         /// <remarks>
-        /// This method can colors piece's foreground with different colors for different Piece.Team.
+        /// This method can color piece's foreground with different colors for different Piece.Team.
         /// </remarks>
         /// <param name="p">The piece to be printed.</param>
         private static void PrintPiece(Piece p)
@@ -160,17 +162,28 @@ namespace Screen
             {
                 var tmp = Console.ForegroundColor;
 
-                Console.ForegroundColor = p.Team switch
-                {
-                    Team.Black => ConsoleColor.Yellow,
-                    Team.White => ConsoleColor.White,
-                    _ => throw new NotImplementedException("Unexpected Piece.Team received. Color not implemented yet.")
-                };
+                Console.ForegroundColor = GetTeamColors(p.Team).ForegroundColor;
 
                 Console.Write(p);
 
                 Console.ForegroundColor = tmp;
             }
+        }
+
+        /// <summary>
+        /// Gets the BackgroundColor and ForegroundColor that represents the <paramref name="team"/>.
+        /// </summary>
+        /// <param name="team">The <see cref="Team"/> to get the colors that represents it.</param>
+        /// <returns>Returns an <see cref="Tuple{ConsoleColor, ConsoleColor}"/> where the first item is the BackgroundColor and the second item is the ForegroundColor, they're the visual representation of the <paramref name="team"/>.
+        /// </returns>
+        private static (ConsoleColor BackgroundColor, ConsoleColor ForegroundColor) GetTeamColors(Team team)
+        {
+            return team switch
+            {
+                Team.Black => (ConsoleColor.DarkYellow , ConsoleColor.Yellow),
+                Team.White => (ConsoleColor.Gray, ConsoleColor.White),
+                _ => throw new NotImplementedException("Unexpected Piece.Team received. Color not implemented yet.")
+            };
         }
     }
 }

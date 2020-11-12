@@ -6,6 +6,7 @@ using Screen;
 using static Screen.GraphicEngine;
 
 using System;
+using Chess;
 
 namespace ConsoleChess
 {
@@ -13,15 +14,15 @@ namespace ConsoleChess
     {
         static void Main()
         {
-            var gameBoard = new ChessBoard();
+            var chessMatch = new ChessMatch(new ChessBoard());
 
             do
             {
                 Console.Clear();
-                CapturedPiecesReport(gameBoard);
+                CapturedPiecesReport(chessMatch.Board.CapturedPieces);
                 Console.WriteLine();
 
-                PrintBoard(gameBoard, 4);
+                PrintBoard(chessMatch.Board, 4);
 
                 BoardPosition originPosition;
                 do
@@ -31,13 +32,13 @@ namespace ConsoleChess
                     {
                         originPosition = UserInput.ConvertToBoardPosition(Console.ReadLine());
 
-                        if (gameBoard.GetPiece(originPosition) is null)
+                        if (chessMatch.Board.GetPiece(originPosition) is null)
                         {
                             throw new ArgumentNullException("You cannot try to select a empty space.", (Exception)null);
                         }
-                        else if (!gameBoard.GetPiece(originPosition).PossibleTargets().HasTrue())
+                        else if (!chessMatch.Board.GetPiece(originPosition).PossibleTargets().HasTrue())
                         {
-                            throw new ArgumentException($"The selected a piece {gameBoard.GetPiece(originPosition)} hasn't any avaliable movement.");
+                            throw new ArgumentException($"The selected a piece {chessMatch.Board.GetPiece(originPosition)} hasn't any avaliable movement.");
                         }
                     }
                     catch (ArgumentException e)
@@ -60,13 +61,13 @@ namespace ConsoleChess
                     break;
                 } while (true);
 
-                var possibleTargets = gameBoard.GetPiece(originPosition).PossibleTargets();
+                var possibleTargets = chessMatch.Board.GetPiece(originPosition).PossibleTargets();
 
                 Console.Clear();
-                CapturedPiecesReport(gameBoard);
+                CapturedPiecesReport(chessMatch.Board.CapturedPieces);
                 Console.WriteLine();
 
-                PrintBoard(gameBoard, possibleTargets, 4);
+                PrintBoard(chessMatch.Board, possibleTargets, 4);
                 Console.WriteLine($"Select a piece: {originPosition}");
 
                 BoardPosition targetPosition;
@@ -77,12 +78,12 @@ namespace ConsoleChess
                     {
                         targetPosition = UserInput.ConvertToBoardPosition(Console.ReadLine());
 
-                        if (!UserInput.IsValidBoardPosition(targetPosition, gameBoard))
+                        if (!UserInput.IsValidBoardPosition(targetPosition, chessMatch.Board))
                         {
                             throw new ArgumentException("The informed position doesn't belong to this board.");
                         }
 
-                        var targetArrayPosition = targetPosition.ToArrayPosition(gameBoard);
+                        var targetArrayPosition = targetPosition.ToArrayPosition(chessMatch.Board);
 
                         if (!possibleTargets[targetArrayPosition.Y, targetArrayPosition.X])
                         {
@@ -109,7 +110,7 @@ namespace ConsoleChess
                     break;
                 } while (true);
 
-                gameBoard.MovePiece(originPosition, targetPosition);
+                chessMatch.Board.MovePiece(originPosition, targetPosition);
             } while (true);
 
         }
