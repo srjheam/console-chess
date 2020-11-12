@@ -44,17 +44,16 @@ namespace ConsoleChess
                     catch (ArgumentException e)
                     {
                         // Clears the line
-                        Console.SetCursorPosition(0, Console.CursorTop - 1);
-                        Console.Write(new string(' ', Console.BufferWidth));
-                        Console.SetCursorPosition(0, Console.CursorTop);
+                        Console.CursorTop -= 1;
+                        Console.Write(new string(' ', Console.BufferWidth) + '\r');
 
                         Console.Write(e.Message);
                         Console.ReadKey(true);
 
                         // Clears the line
-                        Console.SetCursorPosition(0, Console.CursorTop);
-                        Console.Write(new string(' ', Console.BufferWidth));
-                        Console.SetCursorPosition(0, Console.CursorTop);
+
+                        Console.CursorTop -= 1;
+                        Console.Write(new string(' ', Console.BufferWidth) + '\r');
 
                         continue;
                     }
@@ -93,17 +92,15 @@ namespace ConsoleChess
                     catch (ArgumentException e)
                     {
                         // Clears the line
-                        Console.SetCursorPosition(0, Console.CursorTop - 1);
-                        Console.Write(new string(' ', Console.BufferWidth));
-                        Console.SetCursorPosition(0, Console.CursorTop);
+                        Console.CursorTop -= 1;
+                        Console.Write(new string(' ', Console.BufferWidth) + '\r');
 
                         Console.Write(e.Message);
                         Console.ReadKey(true);
 
                         // Clears the line
-                        Console.SetCursorPosition(0, Console.CursorTop);
-                        Console.Write(new string(' ', Console.BufferWidth));
-                        Console.SetCursorPosition(0, Console.CursorTop);
+                        Console.CursorTop -= 1;
+                        Console.Write(new string(' ', Console.BufferWidth) + '\r');
 
                         continue;
                     }

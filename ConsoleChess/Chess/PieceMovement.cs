@@ -1,10 +1,10 @@
 ﻿using Board;
-using Board.Enum;
+using Board.Enums;
 
 using System;
 using System.Collections.Generic;
 
-namespace Pieces
+namespace Chess
 {
     /// <summary>
     /// Contains methods that take a <paramref name="p"/>-piece and returns its possible movements on the board according to the method rule.

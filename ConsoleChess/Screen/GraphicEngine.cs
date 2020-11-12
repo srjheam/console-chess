@@ -1,5 +1,5 @@
-﻿using Pieces;
-using Pieces.Enum;
+﻿using Board;
+using Board.Enums;
 
 using System;
 using System.Collections.Generic;
@@ -82,13 +82,13 @@ namespace Screen
                 + String.Concat(
                     Enumerable.Range('\u0041', board.Columns)
                     .Select(c => (char)c)));
-            Console.SetCursorPosition(columnWhereBoardBegins, Console.CursorTop);
+            Console.CursorLeft = columnWhereBoardBegins;
 
             // Left spaces and TOP EDGE of the board
             Console.WriteLine(
                 new string(' ', spacesAtLeft + greatestRowNumberLength)
                 + $"+{new String('=', board.Columns)}+");
-            Console.SetCursorPosition(columnWhereBoardBegins, Console.CursorTop);
+            Console.CursorLeft = columnWhereBoardBegins;
 
             // Writing the board rows
             for (int row = 0; row < board.Rows; row++)
@@ -111,14 +111,14 @@ namespace Screen
                 Console.WriteLine(
                     "|"
                     + (rowIndicator).ToString().PadRight(greatestRowNumberLength));
-                Console.SetCursorPosition(columnWhereBoardBegins, Console.CursorTop);
+                Console.CursorLeft = columnWhereBoardBegins;
             }
 
             // Left spaces and LOWER EDGE of the board
             Console.WriteLine(
                 new string(' ', spacesAtLeft + greatestRowNumberLength)
                 + $"+{new String('=', board.Columns)}+");
-            Console.SetCursorPosition(columnWhereBoardBegins, Console.CursorTop);
+            Console.CursorLeft = columnWhereBoardBegins;
 
             // Left spaces and BOTTOM COLUMN indicators
             Console.WriteLine(

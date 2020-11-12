@@ -1,17 +1,16 @@
-﻿using Board.Enum;
-
-using Pieces;
-using Pieces.Enum;
+﻿using Board;
+using Board.Enums;
+using Chess.Pieces;
 
 using System.Collections.Generic;
 
-namespace Board
+namespace Chess
 {
     /// <summary>
     /// The <c>Board</c> class contains chess board manipulation related functions.
     /// </summary>
     /// <inheritdoc/>
-    sealed class ChessBoard : Board
+    sealed class ChessBoard : Board.Board
     {
         /// <value>Gets the captured pieces during this match.</value>
         public List<Piece> CapturedPieces { get; } = new List<Piece>();
@@ -21,9 +20,7 @@ namespace Board
         /// </summary>
         public ChessBoard()
             : base(8, 8)
-        {
-            SetupBoard();
-        }
+        { }
 
         sealed public override void MovePiece(int originRow, int originColumn, int targetRow, int targetColumn)
         {
@@ -32,7 +29,7 @@ namespace Board
 
             if (!(target is null))
                 CapturedPieces.Add(target);
-            
+
             origin.Move();
             PlacePiece(origin, targetRow, targetColumn);
         }

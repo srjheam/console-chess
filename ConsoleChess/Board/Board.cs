@@ -1,7 +1,5 @@
 ﻿using Board.Exceptions;
 
-using Pieces;
-
 namespace Board
 {
     /// <summary>
@@ -32,6 +30,8 @@ namespace Board
             squares = new Piece[height, width];
             Columns = width;
             Rows = height;
+
+            SetupBoard();
         }
 
         /// <summary>

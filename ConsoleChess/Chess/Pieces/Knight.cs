@@ -1,8 +1,7 @@
-﻿using Board.Enum;
+﻿using Board;
+using Board.Enums;
 
-using Pieces.Enum;
-
-namespace Pieces
+namespace Chess.Pieces
 {
     /// <summary>
     /// Represents the Knight in chess.

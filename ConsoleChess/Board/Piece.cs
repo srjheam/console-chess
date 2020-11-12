@@ -1,13 +1,10 @@
-﻿using Board;
-using Board.Enum;
-
+﻿using Board.Enums;
+using Chess;
 using Extensions;
-
-using Pieces.Enum;
 
 using System;
 
-namespace Pieces
+namespace Board
 {
     /// <summary>
     /// The <c>Piece</c> class represents a generic piece.
@@ -18,7 +15,7 @@ namespace Pieces
         public readonly Team Team;
 
         /// <value>Gets the board where the piece belongs.</value>
-        public readonly Board.Board Board;
+        public readonly Board Board;
 
         /// <summary>
         /// <para>Contains the origin board side of the piece.</para>
@@ -29,12 +26,12 @@ namespace Pieces
 
         /// <value>Gets the number of times that this piece has been moved.</value>
         public int TimesMoved { get; private set; } = 0;
-        
+
         /// <value>Gets the symbol of the piece.</value>
         protected abstract string Symbol { get; }
         /// <value>Contains the movement rule of the piece.</value>
         protected abstract Movement Movement { get; }
-        
+
         /// <value>
         /// Gets the position of the piece in the <see cref="Board"/>.
         /// </value>
@@ -63,7 +60,7 @@ namespace Pieces
         /// <param name="team">Team of the piece.</param>
         /// <param name="board">Board where the piece belongs.</param>
         /// <param name="side">Origin side on the board.</param>
-        protected Piece(Team team, Board.Board board, BoardSide side)
+        protected Piece(Team team, Board board, BoardSide side)
         {
             Team = team;
             Board = board;

@@ -1,6 +1,4 @@
-﻿using Board;
-
-namespace Chess
+﻿namespace Chess
 {
     /// <summary>
     /// Handles a chess match.
