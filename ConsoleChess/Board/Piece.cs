@@ -55,7 +55,7 @@ namespace Board
         }
 
         /// <summary>
-        /// Base contructor for a new generic piece.
+        /// Base constructor for a new generic piece.
         /// </summary>
         /// <param name="team">Team of the piece.</param>
         /// <param name="board">Board where the piece belongs.</param>

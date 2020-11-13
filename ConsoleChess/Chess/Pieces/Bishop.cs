@@ -12,7 +12,7 @@ namespace Chess.Pieces
         sealed protected override Movement Movement => PieceMovement.DiagonalMove;
 
         /// <summary>
-        /// Contructor for a new <see cref="Bishop"/>.
+        /// Constructor for a new <see cref="Bishop"/>.
         /// </summary>
         /// <inheritdoc/>
         public Bishop(Team team, Board.Board board, BoardSide side)

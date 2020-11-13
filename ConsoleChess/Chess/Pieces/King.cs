@@ -12,7 +12,7 @@ namespace Chess.Pieces
         sealed protected override Movement Movement => PieceMovement.OneSquareAroundMove;
 
         /// <summary>
-        /// Contructor for a new <see cref="King"/>.
+        /// Constructor for a new <see cref="King"/>.
         /// </summary>
         /// <inheritdoc/>
         public King(Team team, Board.Board board, BoardSide side)

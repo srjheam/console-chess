@@ -12,7 +12,7 @@ namespace Chess.Pieces
         sealed protected override Movement Movement => PieceMovement.ForwardMove;
 
         /// <summary>
-        /// Contructor for a new <see cref="Pawn"/>.
+        /// Constructor for a new <see cref="Pawn"/>.
         /// </summary>
         /// <inheritdoc/>
         public Pawn(Team team, Board.Board board, BoardSide side)
