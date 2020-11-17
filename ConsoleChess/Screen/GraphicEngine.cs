@@ -98,17 +98,43 @@ namespace Screen
         /// <param name="board">The board which has the captured pieces.</param>
         public static void CapturedPiecesReport(List<Piece> capturedPieces)
         {
-            var tmp = Console.ForegroundColor;
+            var firstColumn = Console.CursorLeft + 1;
+            var tmpColor = Console.ForegroundColor;
 
             var teams = capturedPieces.GroupBy(x => x.Team).OrderBy(x => x.Key);
 
-            foreach (var team in teams)
+            if (teams.Count() > 0)
             {
-                Console.ForegroundColor = GetTeamColors(team.Key).ForegroundColor;
-                Console.WriteLine($"Captured {team.Key.ToString().ToLower()} pieces: {{{String.Join(", ", team)}}}");
-            }
+                int greaterLength = 0;
+                foreach (var team in teams)
+                {
+                    var header = $"Captured {team.Key.ToString().ToLower()} pieces:";
+                    var captured = $"{String.Join(", ", team)}";
 
-            Console.ForegroundColor = tmp;
+                    if (header.Length > greaterLength)
+                        greaterLength = header.Length;
+                    else if (captured.Length > greaterLength)
+                        greaterLength = captured.Length;
+                }
+
+                foreach (var team in teams)
+                {
+                    Console.ForegroundColor = GetTeamColors(team.Key).ForegroundColor;
+
+                    var header = $"Captured {team.Key.ToString().ToLower()} pieces:";
+                    var captured = $"{String.Join(", ", team)}";
+
+                    Console.CursorLeft = firstColumn;
+                    WriteCentralized(header, greaterLength);
+                    Console.WriteLine();
+
+                    Console.CursorLeft = firstColumn;
+                    WriteCentralized(captured, greaterLength);
+                    Console.WriteLine();
+                }
+                Console.WriteLine();
+            }
+            Console.ForegroundColor = tmpColor;
         }
 
         /// <summary>
@@ -261,6 +287,25 @@ namespace Screen
                 Team.White => (ConsoleColor.Gray, ConsoleColor.White),
                 _ => throw new NotImplementedException("Unexpected Piece.Team received. Color not implemented yet.")
             };
+        }
+
+        /// <summary>
+        /// Writes the specified string value centralized at the middle of the next totalLength-characters, to the standard output stream.
+        /// </summary>
+        /// <param name="value">The value to write.</param>
+        /// <param name="totalLength">The total final length of the value to write.</param>
+        private static void WriteCentralized(string value, int totalLength)
+        {
+            if (value.Length > totalLength)
+                throw new ArgumentException("The value must be equal to or less than totalLength.");
+
+            var spacesAtEdges = (totalLength - value.Length) / 2;
+
+            Console.CursorLeft += spacesAtEdges;
+
+            Console.Write(value);
+
+            Console.CursorLeft += spacesAtEdges;
         }
     }
 }
