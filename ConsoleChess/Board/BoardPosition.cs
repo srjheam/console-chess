@@ -24,19 +24,33 @@ namespace Board
         public BoardPosition(int row, char column)
         {
             column = Char.ToLower(column);
-            
+
             // Checks whether the parameters are valid.
             if (row <= 0)
             {
-                throw new ArgumentOutOfRangeException("A Board.BoardPosition.Row cannot be less than or equal to zero.", (Exception)null);
+                throw new ArgumentOutOfRangeException("A Board.BoardPosition.Row cannot be less than or equal to zero.", innerException: null);
             }
             else if (!Char.IsLetter(column))
             {
                 throw new ArgumentException("A Board.BoardPosition.Column can only be a letter.");
             }
-            
+
             Row = row;
             Column = column;
+        }
+
+        /// <summary>
+        /// Constructor for a position on the <paramref name="board"/> that is based on an existing <see cref="TwoDimensionPosition"/>.
+        /// </summary>
+        /// <param name="position">The existing position to be converted.</param>
+        /// <param name="board">The board the <paramref name="position"/> refers to.</param>
+        public BoardPosition(TwoDimensionPosition position, Board board)
+        {
+            if (position.X >= board.Columns || position.Y >= board.Rows || position.X < 0 || position.Y < 0)
+                throw new InvalidCastException("The informed TwoDimensionPosition cannot be converted to BoardPosition.");
+            
+            Row = board.Rows - position.Y;
+            Column = (char)(97 + position.X);
         }
 
         /// <summary>
@@ -47,19 +61,19 @@ namespace Board
         /// <exception cref="ArgumentException">Thrown when this instance of <see cref="BoardPosition"/> does note belong to the <paramref name="board"/> parameter.</exception>
         public TwoDimensionPosition ToArrayPosition(Board board)
         {
-            int arrayRow = board.Rows - Row;
-            int arrayColumn = (int)Column - 97;
-
             if (!UserInput.IsValidBoardPosition(this, board))
             {
                 throw new ArgumentException("This BoardPosition does not belong to the Board informed in the parameters.");
             }
-            
+
+            int arrayRow = board.Rows - Row;
+            int arrayColumn = (int)Column - 97;
+
             return new TwoDimensionPosition(arrayColumn, arrayRow);
         }
 
         /// <summary>
-        /// Converts this instance to a string.
+        /// Converts this instance to string.
         /// </summary>
         /// <returns>A string that represents this Board.BoardPosition.</returns>
         public override string ToString()

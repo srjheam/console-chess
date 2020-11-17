@@ -1,6 +1,8 @@
 ﻿using Board;
 using Board.Enums;
 
+using Chess;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +16,81 @@ namespace Screen
     {
         /// <value>Gets the highlight background color.</value>
         private const ConsoleColor highlightBackground = ConsoleColor.DarkGray;
+
+        /// <summary>
+        /// Cleans just one row of the console.
+        /// </summary>
+        /// <param name="consoleRow">The console row to be cleaned.</param>
+        public static void CleanConsoleRow(int consoleRow)
+        {
+            (int consoleLeft, int consoleTop) tmp = (Console.CursorLeft, Console.CursorTop);
+
+            Console.CursorLeft = 0;
+            Console.CursorTop = consoleRow;
+
+            Console.Write(new string(' ', Console.BufferWidth));
+
+            Console.CursorLeft = tmp.consoleLeft;
+            Console.CursorTop = tmp.consoleTop;
+        }
+
+        /// <summary>
+        /// Requests an input from the user on the console.
+        /// </summary>
+        /// <remarks>If the message isn't null, it concatenates the <paramref name="message"/> with a ": " at the message's end, writes the result and then reads a line of the user input.</remarks>
+        /// <param name="message">An informative message for the user before the input</param>
+        /// <returns>The user input.</returns>
+        public static string RequestUserInput(string message = null)
+        {
+            var tmp = Console.CursorTop;
+
+            Console.Write(message is null ? null : message + ": ");
+            var input = Console.ReadLine();
+
+            Console.CursorTop = tmp;
+
+            return input;
+        }
+
+        /// <summary>
+        /// Cleans the actual cursor row and prints an error just in the row which the cursor is.
+        /// </summary>
+        /// <param name="error">The error to be printed.</param>
+        public static void ShowOneLineError(Exception error)
+        {
+            CleanConsoleRow(Console.CursorTop);
+
+            Console.Write(error.Message);
+            Console.ReadKey(true);
+
+            CleanConsoleRow(Console.CursorTop);
+
+            Console.CursorLeft = 0;
+        }
+
+        /// <summary>
+        /// Prints on the console the summary of the <paramref name="match"/>.
+        /// </summary>
+        /// <param name="match">The match to print its summary.</param>
+        public static void PrintMatchSummary(ChessMatch match)
+        {
+            CapturedPiecesReport(match.Board.CapturedPieces);
+
+            if (match.SelectedPiece is null)
+                PrintBoard(match.Board, 4);
+            else
+                PrintBoard(match.Board, match.SelectedPiece.PossibleTargets(), 4);
+            Console.WriteLine();
+
+            if (!(match.SelectedPiece is null))
+            {
+                // Example:
+                // Selected piece: P (e2)
+                Console.Write($"Selected piece: ");
+                PrintPiece(match.SelectedPiece);
+                Console.WriteLine($" ({ new BoardPosition(match.SelectedPiece.Position, match.Board)})");
+            }
+        }
 
         /// <summary>
         /// Prints a report regarding the captured pieces by each team of the board.
@@ -44,7 +121,7 @@ namespace Screen
         {
             PrintBoard(board, new bool[board.Rows, board.Columns], spacesAtLeft);
         }
-        
+
         /// <summary>
         /// Prints an board to the console with all letter, row indicators and highlighting selected board squares.
         /// </summary>
@@ -180,7 +257,7 @@ namespace Screen
         {
             return team switch
             {
-                Team.Black => (ConsoleColor.DarkYellow , ConsoleColor.Yellow),
+                Team.Black => (ConsoleColor.DarkYellow, ConsoleColor.Yellow),
                 Team.White => (ConsoleColor.Gray, ConsoleColor.White),
                 _ => throw new NotImplementedException("Unexpected Piece.Team received. Color not implemented yet.")
             };

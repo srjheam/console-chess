@@ -11,6 +11,30 @@ namespace Screen
     static class UserInput
     {
         /// <summary>
+        /// Requests a BoardPosition input from the user.
+        /// </summary>
+        /// <param name="message">An informational message about what the input is.</param>
+        /// <returns>The user input converted to BoardPosition.</returns>
+        public static BoardPosition RequestInput(in string message)
+        {
+            BoardPosition result;
+            
+            var input = GraphicEngine.RequestUserInput(message);
+            try
+            {
+                result = ConvertToBoardPosition(input);
+            }
+            catch (Exception e)
+            {
+                GraphicEngine.ShowOneLineError(e);
+
+                return RequestInput(message);
+            }
+
+            return result;
+        }
+        
+        /// <summary>
         /// Converts the <paramref name="input"/> to its equivalent <see cref="BoardPosition"/>.
         /// </summary>
         /// <param name="input">The string to be converted.</param>
