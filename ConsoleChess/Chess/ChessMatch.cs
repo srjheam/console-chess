@@ -1,4 +1,5 @@
 ﻿using Board;
+using Board.Enums;
 
 using Extensions;
 
@@ -14,16 +15,29 @@ namespace Chess
     /// </summary>
     class ChessMatch
     {
+        /// <value>Gets the number of moves made in the game.</value>
+        private int movementsMade;
         /// <value>Gets this match's chess board.</value>
         public ChessBoard Board { get; }
         /// <value>Gets the selected piece, if one is selected.</value>
         public Piece SelectedPiece { get; private set; }
+        /// <value>Gets the turn the chess game is on.</value>
+        public int Turn
+        {
+            get => (int)Math.Ceiling(movementsMade / 2.0);
+        }
+        /// <value>Get which team is playing now.</value>
+        public Team TeamPlaying
+        {
+            get => (Team)(movementsMade % 2);
+        }
 
         /// <summary>
         /// Creates a new chess match.
         /// </summary>
         public ChessMatch()
         {
+            movementsMade = 0;
             Board = new ChessBoard();
         }
 
@@ -62,6 +76,7 @@ namespace Chess
         /// </summary>
         private void NextTurn()
         {
+            movementsMade++;
             SelectedPiece = null;
         }
 
@@ -75,7 +90,9 @@ namespace Chess
                 var userPiece = Board.GetPiece(UserInput.RequestInput("Select a Piece").ToArrayPosition(Board));
 
                 if (userPiece is null)
-                    throw new ArgumentNullException("You cannot try to select an empty space.", innerException: null);
+                    throw new ArgumentNullException("You cannot select an empty space.", innerException: null);
+                else if (userPiece.Team != TeamPlaying)
+                    throw new ArgumentException("You cannot select an enemy piece now.");
                 else if (!userPiece.PossibleTargets().HasTrue())
                     throw new ArgumentException("The selected piece has no movements available.");
 

@@ -82,6 +82,12 @@ namespace Screen
                 PrintBoard(match.Board, match.SelectedPiece.PossibleTargets(), 4);
             Console.WriteLine();
 
+            Console.WriteLine($"Turn: {match.Turn}");
+            Console.Write("Team: ");
+            PrintTeam(match.TeamPlaying);
+            Console.WriteLine();
+            Console.WriteLine();
+
             if (!(match.SelectedPiece is null))
             {
                 // Example:
@@ -274,6 +280,23 @@ namespace Screen
         }
 
         /// <summary>
+        /// Prints the team on the console with its specific colors.
+        /// </summary>
+        /// <param name="t">The team to print.</param>
+        private static void PrintTeam(Team t)
+        {
+            var tmp = (Console.BackgroundColor, Console.ForegroundColor);
+
+            var teamColors = GetTeamColors(t);
+            Console.BackgroundColor = teamColors.BackgroundColor;
+            Console.ForegroundColor = teamColors.ForegroundColor;
+            Console.Write($" {t.ToString().ToUpper()} ");
+
+            Console.BackgroundColor = tmp.BackgroundColor;
+            Console.ForegroundColor = tmp.ForegroundColor;
+        }
+
+        /// <summary>
         /// Gets the BackgroundColor and ForegroundColor that represents the <paramref name="team"/>.
         /// </summary>
         /// <param name="team">The <see cref="Team"/> to get the colors that represents it.</param>
@@ -284,7 +307,7 @@ namespace Screen
             return team switch
             {
                 Team.Black => (ConsoleColor.DarkYellow, ConsoleColor.Yellow),
-                Team.White => (ConsoleColor.Gray, ConsoleColor.White),
+                Team.White => (ConsoleColor.DarkGray, ConsoleColor.White),
                 _ => throw new NotImplementedException("Unexpected Piece.Team received. Color not implemented yet.")
             };
         }
