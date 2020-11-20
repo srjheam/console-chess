@@ -1,12 +1,11 @@
-﻿using Board;
-using Board.Enums;
+﻿using Board.Enums;
 
 namespace Chess.Pieces
 {
     /// <summary>
     /// Represents the Bishop in chess.
     /// </summary>
-    sealed class Bishop : Piece
+    sealed class Bishop : ChessPiece
     {
         protected sealed override Movement Movement => PieceMovement.DiagonalMove;
         protected sealed override string Symbol => "B";

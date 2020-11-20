@@ -1,12 +1,11 @@
-﻿using Board;
-using Board.Enums;
+﻿using Board.Enums;
 
 namespace Chess.Pieces
 {
     /// <summary>
     /// Represents the Queen in chess.
     /// </summary>
-    sealed class Queen : Piece
+    sealed class Queen : ChessPiece
     {
         protected sealed override Movement Movement => (Movement)PieceMovement.StraightMove + PieceMovement.DiagonalMove;
         protected sealed override string Symbol => "Q";

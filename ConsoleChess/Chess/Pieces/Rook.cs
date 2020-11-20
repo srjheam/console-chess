@@ -1,12 +1,11 @@
-﻿using Board;
-using Board.Enums;
+﻿using Board.Enums;
 
 namespace Chess.Pieces
 {
     /// <summary>
     /// Represents the Rook in chess.
     /// </summary>
-    sealed class Rook : Piece
+    sealed class Rook : ChessPiece
     {
         protected sealed override Movement Movement => PieceMovement.StraightMove;
         protected sealed override string Symbol => "R";

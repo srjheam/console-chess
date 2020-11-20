@@ -1,12 +1,11 @@
-﻿using Board;
-using Board.Enums;
+﻿using Board.Enums;
 
 namespace Chess.Pieces
 {
     /// <summary>
     /// Represents the King in chess.
     /// </summary>
-    sealed class King : Piece
+    sealed class King : ChessPiece
     {
         protected sealed override Movement Movement => PieceMovement.OneSquareAroundMove;
         protected sealed override string Symbol => "K";

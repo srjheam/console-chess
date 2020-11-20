@@ -67,6 +67,25 @@ namespace Board
         }
 
         /// <summary>
+        /// Merges all pieces' possible targets of the <paramref name="t"/>-team.
+        /// </summary>
+        /// <param name="t">The team to get the possible targets of all its pieces.</param>
+        /// <returns>An array of booleans with the same dimensions as the <see cref="Board"/>, where true positions mean a possible target on the board.</returns>
+        public bool[,] GetAllPossibleTargets(Team t)
+        {
+            var allPossibleTargets = new bool[Rows, Columns];
+
+            var queryResult = Pieces.Where(p => p.Team == t);
+
+            foreach (var piece in queryResult)
+            {
+                allPossibleTargets.Merge(piece.PossibleTargets(this));
+            }
+
+            return allPossibleTargets;
+        }
+
+        /// <summary>
         /// Gets whatever is in the position informed by the parameters.
         /// </summary>
         /// <param name="row">Row position in the array.</param>

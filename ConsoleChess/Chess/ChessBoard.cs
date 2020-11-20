@@ -23,8 +23,7 @@ namespace Chess
         /// Base constructor for a new standard chess board.
         /// </summary>
         public ChessBoard()
-            : base(8, 8)
-        { }
+            : base(8, 8) { }
 
         /// <summary>
         /// Given a team, this method returns that team's king.

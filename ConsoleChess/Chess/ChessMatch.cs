@@ -1,6 +1,8 @@
 ﻿using Board;
 using Board.Enums;
 
+using Chess.Pieces;
+
 using Extensions;
 
 using Screen;
@@ -20,7 +22,7 @@ namespace Chess
         /// <value>Gets this match's chess board.</value>
         public ChessBoard Board { get; }
         /// <value>Gets the selected piece, if one is selected.</value>
-        public Piece SelectedPiece { get; private set; }
+        public ChessPiece SelectedPiece { get; private set; }
         /// <value>Gets the turn the chess game is on.</value>
         public int Turn
         {
@@ -87,7 +89,7 @@ namespace Chess
         {
             try
             {
-                var userPiece = Board.GetPiece(UserInput.RequestInput("Select a Piece").ToArrayPosition(Board));
+                var userPiece = Board.GetPiece(UserInput.RequestInput("Select a Piece").ToArrayPosition(Board)) as ChessPiece;
 
                 if (userPiece is null)
                     throw new ArgumentNullException("You cannot select an empty space.", innerException: null);
