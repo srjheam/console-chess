@@ -10,8 +10,9 @@ namespace Chess
     /// Contains methods that take a <paramref name="p"/>-piece and returns its possible movements on the board according to the method rule.
     /// </summary>
     /// <param name="p">The p-piece to get its possible movements.</param>
-    /// <returns>An array of Booleans with possible targets for the <paramref name="p"/>-piece, where true means a valid target and false means an invalid target.</returns>
-    delegate bool[,] Movement(Piece p);
+    /// <param name="board">The board where the piece is.</param>
+    /// <returns>An array of Booleans possible targets for the <paramref name="p"/>-piece, where true means a valid target and false means an invalid target.</returns>
+    delegate bool[,] Movement(Piece p, Board.Board board);
 
     /// <summary>
     /// Contains all types of movement of the pieces.
@@ -22,11 +23,12 @@ namespace Chess
         /// Returns an array of Booleans with possible targets for a straight-moving <see cref="Piece"/>.
         /// </summary>
         /// <param name="p">The straight-moving piece.</param>
+        /// <param name="board">The board where the piece is.</param>
         /// <returns>An array of Booleans with possible targets for the straight-moving <paramref name="p"/>-piece, where true means a valid target and false means an invalid target.</returns>
-        public static bool[,] StraightMove(Piece p)
+        public static bool[,] StraightMove(Piece p, Board.Board board)
         {
-            var possibleMovements = new bool[p.Board.Rows, p.Board.Columns];
-            var position = p.Position;
+            var possibleMovements = new bool[board.Rows, board.Columns];
+            var position = p.GetPosition(board);
 
             #region Top
             // Checks the top of the piece:
@@ -36,7 +38,7 @@ namespace Chess
             //    P
             for (int row = position.Y - 1; row >= 0; row--)
             {
-                var watchedTarget = p.Board.GetPiece(row, position.X);
+                var watchedTarget = board.GetPiece(row, position.X);
 
                 if (watchedTarget is null)
                 {
@@ -57,9 +59,9 @@ namespace Chess
             #region Right
             // Checks the right side of the piece:
             //  P01[...]
-            for (int column = position.X + 1; column < p.Board.Columns; column++)
+            for (int column = position.X + 1; column < board.Columns; column++)
             {
-                var watchedTarget = p.Board.GetPiece(position.Y, column);
+                var watchedTarget = board.GetPiece(position.Y, column);
 
                 if (watchedTarget is null)
                 {
@@ -83,9 +85,9 @@ namespace Chess
             //    0
             //    1
             //  [...]
-            for (int row = position.Y + 1; row < p.Board.Rows; row++)
+            for (int row = position.Y + 1; row < board.Rows; row++)
             {
-                var watchedTarget = p.Board.GetPiece(row, position.X);
+                var watchedTarget = board.GetPiece(row, position.X);
 
                 if (watchedTarget is null)
                 {
@@ -108,7 +110,7 @@ namespace Chess
             //  [...]10P
             for (int column = position.X - 1; column >= 0; column--)
             {
-                var watchedTarget = p.Board.GetPiece(position.Y, column);
+                var watchedTarget = board.GetPiece(position.Y, column);
 
                 if (watchedTarget is null)
                 {
@@ -133,11 +135,12 @@ namespace Chess
         /// Returns an array of Booleans with possible targets for a diagonal-moving <see cref="Piece"/>.
         /// </summary>
         /// <param name="p">The diagonal-moving piece.</param>
+        /// <param name="board">The board where the piece is.</param>
         /// <returns>An array of Booleans with possible targets for the diagonal-moving <paramref name="p"/>-piece, where true means a valid target and false means an invalid target.</returns>
-        public static bool[,] DiagonalMove(Piece p)
+        public static bool[,] DiagonalMove(Piece p, Board.Board board)
         {
-            var possibleMovements = new bool[p.Board.Rows, p.Board.Columns];
-            var position = p.Position;
+            var possibleMovements = new bool[board.Rows, board.Columns];
+            var position = p.GetPosition(board);
 
             #region Top right
             // Checks the top right diagonal of the piece:
@@ -145,9 +148,9 @@ namespace Chess
             //      1
             //     0
             //    P
-            for (int row = position.Y - 1, column = position.X + 1; row >= 0 && column < p.Board.Columns; row--, column++)
+            for (int row = position.Y - 1, column = position.X + 1; row >= 0 && column < board.Columns; row--, column++)
             {
-                var watchedTarget = p.Board.GetPiece(row, column);
+                var watchedTarget = board.GetPiece(row, column);
 
                 if (watchedTarget is null)
                 {
@@ -171,9 +174,9 @@ namespace Chess
             //     0
             //      1
             //      [..]
-            for (int row = position.Y + 1, column = position.X + 1; row < p.Board.Rows && column < p.Board.Columns; row++, column++)
+            for (int row = position.Y + 1, column = position.X + 1; row < board.Rows && column < board.Columns; row++, column++)
             {
-                var watchedTarget = p.Board.GetPiece(row, column);
+                var watchedTarget = board.GetPiece(row, column);
 
                 if (watchedTarget is null)
                 {
@@ -197,9 +200,9 @@ namespace Chess
             //        0
             //       1
             //    [..]
-            for (int row = position.Y + 1, column = position.X - 1; row < p.Board.Rows && column >= 0; row++, column--)
+            for (int row = position.Y + 1, column = position.X - 1; row < board.Rows && column >= 0; row++, column--)
             {
-                var watchedTarget = p.Board.GetPiece(row, column);
+                var watchedTarget = board.GetPiece(row, column);
 
                 if (watchedTarget is null)
                 {
@@ -225,7 +228,7 @@ namespace Chess
             //         P
             for (int row = position.Y - 1, column = position.X - 1; row >= 0 && column >= 0; row--, column--)
             {
-                var watchedTarget = p.Board.GetPiece(row, column);
+                var watchedTarget = board.GetPiece(row, column);
 
                 if (watchedTarget is null)
                 {
@@ -250,11 +253,12 @@ namespace Chess
         /// Returns an array of Booleans with possible targets for a 'one square around moving' <see cref="Piece"/>.
         /// </summary>
         /// <param name="p">The 'one square around moving' piece.</param>
+        /// <param name="board">The board where the piece is.</param>
         /// <returns>An array of Booleans with possible targets for the <paramref name="p"/>-piece, where true means a valid target and false means an invalid target.</returns>
-        public static bool[,] OneSquareAroundMove(Piece p)
+        public static bool[,] OneSquareAroundMove(Piece p, Board.Board board)
         {
-            var possibleMovements = new bool[p.Board.Rows, p.Board.Columns];
-            var position = p.Position;
+            var possibleMovements = new bool[board.Rows, board.Columns];
+            var position = p.GetPosition(board);
 
             #region One Square Around
             // 012
@@ -262,19 +266,19 @@ namespace Chess
             // 678
             for (int row = position.Y - 1; row <= position.Y + 1; row++)
             {
-                if (row < 0 || row >= p.Board.Rows)
+                if (row < 0 || row >= board.Rows)
                 {
                     continue;
                 }
 
                 for (int column = position.X - 1; column <= position.X + 1; column++)
                 {
-                    if (column < 0 || column >= p.Board.Columns)
+                    if (column < 0 || column >= board.Columns)
                     {
                         continue;
                     }
 
-                    var watchedTarget = p.Board.GetPiece(row, column);
+                    var watchedTarget = board.GetPiece(row, column);
 
                     if (watchedTarget is null || watchedTarget.Team != p.Team)
                     {
@@ -302,11 +306,12 @@ namespace Chess
         /// </list>
         /// </remarks>
         /// <param name="p">The forward-moving piece.</param>
+        /// <param name="board">The board where the piece is.</param>
         /// <returns>An array of Booleans with possible targets for the forward-moving <paramref name="p"/>-piece, where true means a valid target and false means an invalid target.</returns>
-        public static bool[,] ForwardMove(Piece p)
+        public static bool[,] ForwardMove(Piece p, Board.Board board)
         {
-            var possibleMovements = new bool[p.Board.Rows, p.Board.Columns];
-            var position = p.Position;
+            var possibleMovements = new bool[board.Rows, board.Columns];
+            var position = p.GetPosition(board);
 
             #region Direction Modifier
             /* Set the directionModifier, it'll say which direction to follow
@@ -332,11 +337,11 @@ namespace Chess
             {
                 watchedPosition = new TwoDimensionPosition(position.X - 1 + columnModifier, position.Y + directionModifier);
                 if (watchedPosition.X >= 0
-                    && watchedPosition.X < p.Board.Columns
+                    && watchedPosition.X < board.Columns
                     && watchedPosition.Y >= 0
-                    && watchedPosition.Y < p.Board.Rows)
+                    && watchedPosition.Y < board.Rows)
                 {
-                    var watchedPiece = p.Board.GetPiece(watchedPosition);
+                    var watchedPiece = board.GetPiece(watchedPosition);
                     if (!(watchedPiece is null) && watchedPiece.Team != p.Team)
                     {
                         possibleMovements[watchedPosition.Y, watchedPosition.X] = true;
@@ -351,8 +356,8 @@ namespace Chess
             //  P
             watchedPosition = new TwoDimensionPosition(position.X, position.Y + directionModifier);
             if (watchedPosition.Y >= 0
-                && watchedPosition.Y < p.Board.Rows
-                && p.Board.GetPiece(watchedPosition) is null)
+                && watchedPosition.Y < board.Rows
+                && board.GetPiece(watchedPosition) is null)
             {
                 possibleMovements[watchedPosition.Y, watchedPosition.X] = true;
 
@@ -361,9 +366,9 @@ namespace Chess
                 //  P
                 watchedPosition = new TwoDimensionPosition(watchedPosition.X, watchedPosition.Y + directionModifier);
                 if (watchedPosition.Y >= 0
-                    && watchedPosition.Y < p.Board.Rows
+                    && watchedPosition.Y < board.Rows
                     && p.TimesMoved == 0
-                    && p.Board.GetPiece(watchedPosition.Y, watchedPosition.X) is null)
+                    && board.GetPiece(watchedPosition.Y, watchedPosition.X) is null)
                 {
                     possibleMovements[watchedPosition.Y, watchedPosition.X] = true;
                 }
@@ -381,11 +386,12 @@ namespace Chess
         /// This movement consists of moving the piece two squares vertically and then one square horizontally (or vice versa).
         /// </remarks>
         /// <param name="p">The "L-shape"-moving piece.</param>
+        /// <param name="board">The board where the piece is.</param>
         /// <returns>An array of Booleans with possible targets for the "L-shape"-moving <paramref name="p"/>-piece, where true means a valid target and false means an invalid target.</returns>
-        public static bool[,] LShapeMove(Piece p)
+        public static bool[,] LShapeMove(Piece p, Board.Board board)
         {
-            var possibleMovements = new bool[p.Board.Rows, p.Board.Columns];
-            var position = p.Position;
+            var possibleMovements = new bool[board.Rows, board.Columns];
+            var position = p.GetPosition(board);
 
             #region Gathering Possible Targets
             /*   7 0
@@ -410,9 +416,9 @@ namespace Chess
             #region Filtering Targets
             foreach (var target in targetsSet)
             {
-                if (target.Y >= 0 && target.Y < p.Board.Rows && target.X >= 0 && target.X < p.Board.Columns)
+                if (target.Y >= 0 && target.Y < board.Rows && target.X >= 0 && target.X < board.Columns)
                 {
-                    var watchedPiece = p.Board.GetPiece(target);
+                    var watchedPiece = board.GetPiece(target);
                     if (watchedPiece is null || watchedPiece.Team != p.Team)
                     {
                         possibleMovements[target.Y, target.X] = true;

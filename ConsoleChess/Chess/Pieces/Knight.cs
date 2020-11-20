@@ -8,14 +8,14 @@ namespace Chess.Pieces
     /// </summary>
     sealed class Knight : Piece
     {
-        sealed protected override string Symbol => "N";
-        sealed protected override Movement Movement => PieceMovement.LShapeMove;
+        protected sealed override Movement Movement => PieceMovement.LShapeMove;
+        protected sealed override string Symbol => "N";
 
         /// <summary>
         /// Constructor for a new <see cref="Knight"/>.
         /// </summary>
         /// <inheritdoc/>
-        public Knight(Team team, Board.Board board, BoardSide side)
-            : base(team, board, side) { }
+        public Knight(Team team, BoardSide side)
+            : base(team, side) { }
     }
 }

@@ -68,7 +68,7 @@ namespace Chess
 
             var selectedTarget = SelectSelectedPieceTarget();
 
-            Board.MovePiece(new BoardPosition(SelectedPiece.Position, Board), new BoardPosition(selectedTarget, Board));
+            Board.MovePiece(new BoardPosition(SelectedPiece.GetPosition(Board), Board), new BoardPosition(selectedTarget, Board));
         }
 
         /// <summary>
@@ -93,7 +93,7 @@ namespace Chess
                     throw new ArgumentNullException("You cannot select an empty space.", innerException: null);
                 else if (userPiece.Team != TeamPlaying)
                     throw new ArgumentException("You cannot select an enemy piece now.");
-                else if (!userPiece.PossibleTargets().HasTrue())
+                else if (!userPiece.PossibleTargets(Board).HasTrue())
                     throw new ArgumentException("The selected piece has no movements available.");
 
                 SelectedPiece = userPiece;
@@ -115,7 +115,7 @@ namespace Chess
             {
                 var userTarget = UserInput.RequestInput("Select a target").ToArrayPosition(Board);
 
-                if (!SelectedPiece.PossibleTargets()[userTarget.Y, userTarget.X])
+                if (!SelectedPiece.PossibleTargets(Board)[userTarget.Y, userTarget.X])
                     throw new ArgumentException("The informed position isn't a possible target for the selected piece.");
 
                 return userTarget;

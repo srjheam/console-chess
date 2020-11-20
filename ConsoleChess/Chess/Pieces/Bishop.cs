@@ -8,14 +8,14 @@ namespace Chess.Pieces
     /// </summary>
     sealed class Bishop : Piece
     {
-        sealed protected override string Symbol => "B";
-        sealed protected override Movement Movement => PieceMovement.DiagonalMove;
+        protected sealed override Movement Movement => PieceMovement.DiagonalMove;
+        protected sealed override string Symbol => "B";
 
         /// <summary>
         /// Constructor for a new <see cref="Bishop"/>.
         /// </summary>
         /// <inheritdoc/>
-        public Bishop(Team team, Board.Board board, BoardSide side)
-            : base(team, board, side) { }
+        public Bishop(Team team, BoardSide side)
+            : base(team, side) { }
     }
 }

@@ -8,14 +8,14 @@ namespace Chess.Pieces
     /// </summary>
     sealed class Rook : Piece
     {
-        sealed protected override string Symbol => "R";
-        sealed protected override Movement Movement => PieceMovement.StraightMove;
+        protected sealed override Movement Movement => PieceMovement.StraightMove;
+        protected sealed override string Symbol => "R";
 
         /// <summary>
         /// Constructor for a new <see cref="Rook"/>.
         /// </summary>
         /// <inheritdocs/>
-        public Rook(Team team, Board.Board board, BoardSide side)
-            : base(team, board, side) { }
+        public Rook(Team team, BoardSide side)
+            : base(team, side) { }
     }
 }

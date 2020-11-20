@@ -79,7 +79,7 @@ namespace Screen
             if (match.SelectedPiece is null)
                 PrintBoard(match.Board, 4);
             else
-                PrintBoard(match.Board, match.SelectedPiece.PossibleTargets(), 4);
+                PrintBoard(match.Board, match.SelectedPiece.PossibleTargets(match.Board), 4);
             Console.WriteLine();
 
             Console.WriteLine($"Turn: {match.Turn}");
@@ -94,7 +94,7 @@ namespace Screen
                 // Selected piece: P (e2)
                 Console.Write($"Selected piece: ");
                 PrintPiece(match.SelectedPiece);
-                Console.WriteLine($" ({ new BoardPosition(match.SelectedPiece.Position, match.Board)})");
+                Console.WriteLine($" ({ new BoardPosition(match.SelectedPiece.GetPosition(match.Board), match.Board)})");
             }
         }
 
