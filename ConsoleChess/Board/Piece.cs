@@ -31,9 +31,10 @@ namespace Board
         /// <summary>
         /// Base constructor for a new generic piece.
         /// </summary>
-        /// <param name="team">Team of the piece.</param>
+        /// <param name="board"></param>
         /// <param name="side">Origin side on the board.</param>
-        protected Piece(Team team, BoardSide side)
+        /// <param name="team">Team of the piece.</param>
+        protected Piece(Board board, BoardSide side, Team team)
         {
             Team = team;
             Side = side;

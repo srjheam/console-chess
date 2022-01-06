@@ -14,7 +14,7 @@ namespace Chess.Pieces
         /// Constructor for a new <see cref="King"/>.
         /// </summary>
         /// <inheritdoc/>
-        public King(Team team, BoardSide side)
-            : base(team, side) { }
+        public King(ChessBoard board, BoardSide side, Team team)
+            : base(board, side, team) { }
     }
 }

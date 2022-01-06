@@ -40,7 +40,7 @@ namespace Chess
         public ChessMatch()
         {
             movementsMade = 0;
-            Board = new ChessBoard();
+            Board = new ChessBoard(this);
         }
 
         /// <summary>
