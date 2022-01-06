@@ -28,7 +28,7 @@ namespace Chess
         public static bool[,] StraightMove(Piece p, Board.Board board)
         {
             var possibleMovements = new bool[board.Rows, board.Columns];
-            var position = p.GetPosition(board);
+            var position = p.GetPosition();
 
             #region Top
             // Checks the top of the piece:
@@ -140,7 +140,7 @@ namespace Chess
         public static bool[,] DiagonalMove(Piece p, Board.Board board)
         {
             var possibleMovements = new bool[board.Rows, board.Columns];
-            var position = p.GetPosition(board);
+            var position = p.GetPosition();
 
             #region Top right
             // Checks the top right diagonal of the piece:
@@ -258,7 +258,7 @@ namespace Chess
         public static bool[,] OneSquareAroundMove(Piece p, Board.Board board)
         {
             var possibleMovements = new bool[board.Rows, board.Columns];
-            var position = p.GetPosition(board);
+            var position = p.GetPosition();
 
             #region One Square Around
             // 012
@@ -311,7 +311,7 @@ namespace Chess
         public static bool[,] ForwardMove(Piece p, Board.Board board)
         {
             var possibleMovements = new bool[board.Rows, board.Columns];
-            var position = p.GetPosition(board);
+            var position = p.GetPosition();
 
             #region Direction Modifier
             /* Set the directionModifier, it'll say which direction to follow
@@ -391,7 +391,7 @@ namespace Chess
         public static bool[,] LShapeMove(Piece p, Board.Board board)
         {
             var possibleMovements = new bool[board.Rows, board.Columns];
-            var position = p.GetPosition(board);
+            var position = p.GetPosition();
 
             #region Gathering Possible Targets
             /*   7 0

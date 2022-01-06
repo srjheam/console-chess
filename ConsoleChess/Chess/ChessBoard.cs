@@ -18,12 +18,16 @@ namespace Chess
     {
         /// <value>Gets the captured pieces during this match.</value>
         public List<Piece> CapturedPieces { get; } = new List<Piece>();
+        public ChessMatch ChessMatch { get; }
 
         /// <summary>
         /// Base constructor for a new standard chess board.
         /// </summary>
-        public ChessBoard()
-            : base(8, 8) { }
+        public ChessBoard(ChessMatch match)
+            : base(8, 8)
+        {
+            ChessMatch = match;
+        }
 
         /// <summary>
         /// Given a team, this method returns that team's king.
@@ -48,19 +52,19 @@ namespace Chess
         protected sealed override void SetupBoard()
         {
             #region Black Pieces
-            PlacePiece(new Rook(Team.Black, BoardSide.Top), 0, 0);
-            PlacePiece(new Knight(Team.Black, BoardSide.Top), 0, 1);
-            PlacePiece(new Bishop(Team.Black, BoardSide.Top), 0, 2);
-            PlacePiece(new Queen(Team.Black, BoardSide.Top), 0, 3);
-            PlacePiece(new King(Team.Black, BoardSide.Top), 0, 4);
-            PlacePiece(new Bishop(Team.Black, BoardSide.Top), 0, 5);
-            PlacePiece(new Knight(Team.Black,  BoardSide.Top), 0, 6);
-            PlacePiece(new Rook(Team.Black, BoardSide.Top), 0, 7);
+            PlacePiece(new Rook(this, BoardSide.Top, Team.Black), 0, 0);
+            PlacePiece(new Knight(this, BoardSide.Top, Team.Black), 0, 1);
+            PlacePiece(new Bishop(this, BoardSide.Top, Team.Black), 0, 2);
+            PlacePiece(new Queen(this, BoardSide.Top, Team.Black), 0, 3);
+            PlacePiece(new King(this, BoardSide.Top, Team.Black), 0, 4);
+            PlacePiece(new Bishop(this, BoardSide.Top, Team.Black), 0, 5);
+            PlacePiece(new Knight(this, BoardSide.Top, Team.Black), 0, 6);
+            PlacePiece(new Rook(this, BoardSide.Top, Team.Black), 0, 7);
             
             // Places black pawns
             for (int column = 0; column < 8; column++)
             {
-                PlacePiece(new Pawn(Team.Black, BoardSide.Top), 1, column);
+                PlacePiece(new Pawn(this, BoardSide.Top, Team.Black), 1, column);
             }
             #endregion
 
@@ -68,16 +72,16 @@ namespace Chess
             // Places white pawns
             for (int column = 0; column < 8; column++)
             {
-                PlacePiece(new Pawn(Team.White, BoardSide.Bottom), 6, column);
+                PlacePiece(new Pawn(this, BoardSide.Bottom, Team.White), 6, column);
             }
-            PlacePiece(new Rook(Team.White, BoardSide.Bottom), 7, 0);
-            PlacePiece(new Knight(Team.White, BoardSide.Bottom), 7, 1);
-            PlacePiece(new Bishop(Team.White, BoardSide.Bottom), 7, 2);
-            PlacePiece(new Queen(Team.White, BoardSide.Bottom), 7, 3);
-            PlacePiece(new King(Team.White, BoardSide.Bottom), 7, 4);
-            PlacePiece(new Bishop(Team.White, BoardSide.Bottom), 7, 5);
-            PlacePiece(new Knight(Team.White, BoardSide.Bottom), 7, 6);
-            PlacePiece(new Rook(Team.White, BoardSide.Bottom), 7, 7);
+            PlacePiece(new Rook(this, BoardSide.Bottom, Team.White), 7, 0);
+            PlacePiece(new Knight(this, BoardSide.Bottom, Team.White), 7, 1);
+            PlacePiece(new Bishop(this, BoardSide.Bottom, Team.White), 7, 2);
+            PlacePiece(new Queen(this, BoardSide.Bottom, Team.White), 7, 3);
+            PlacePiece(new King(this, BoardSide.Bottom, Team.White), 7, 4);
+            PlacePiece(new Bishop(this, BoardSide.Bottom, Team.White), 7, 5);
+            PlacePiece(new Knight(this, BoardSide.Bottom, Team.White), 7, 6);
+            PlacePiece(new Rook(this, BoardSide.Bottom, Team.White), 7, 7);
             #endregion
         }
     }

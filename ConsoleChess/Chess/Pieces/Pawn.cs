@@ -14,7 +14,7 @@ namespace Chess.Pieces
         /// Constructor for a new <see cref="Pawn"/>.
         /// </summary>
         /// <inheritdoc/>
-        public Pawn(Team team, BoardSide side)
-            : base(team, side) { }
+        public Pawn(ChessBoard board, BoardSide side, Team team)
+            : base(board, side, team) { }
     }
 }

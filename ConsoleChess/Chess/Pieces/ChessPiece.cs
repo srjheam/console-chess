@@ -8,7 +8,14 @@ namespace Chess.Pieces
     /// </summary>
     abstract class ChessPiece : Piece
     {
-        public ChessPiece(Team team, BoardSide boardSide)
-            : base(team, boardSide) { }
+        public new ChessBoard Board { get; }
+        /// <summary>
+        /// Base contructor for a new ChessPiece.
+        /// </summary>
+        public ChessPiece(ChessBoard chessBoard, BoardSide boardSide, Team team)
+            : base(chessBoard, boardSide, team)
+        {
+            Board = chessBoard;
+        }
     }
 }

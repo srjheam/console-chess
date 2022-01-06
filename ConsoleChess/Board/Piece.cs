@@ -14,6 +14,11 @@ namespace Board
     abstract class Piece
     {
         /// <summary>
+        /// Contains the board of the piece.
+        /// </summary>
+        /// <value>Gets the origin side of the piece on the board.</value>
+        public Board Board { get; }
+        /// <summary>
         /// <para>Contains the origin board side of the piece.</para>
         /// This data is used to identify the direction to follow when the piece is of the ForwardMove type.
         /// </summary>
@@ -31,27 +36,28 @@ namespace Board
         /// <summary>
         /// Base constructor for a new generic piece.
         /// </summary>
-        /// <param name="team">Team of the piece.</param>
+        /// <param name="board">Board of the piece.</param>
         /// <param name="side">Origin side on the board.</param>
-        protected Piece(Team team, BoardSide side)
+        /// <param name="team">Team of the piece.</param>
+        protected Piece(Board board, BoardSide side, Team team)
         {
+            Board = board;
             Team = team;
             Side = side;
         }
 
         /// <summary>
-        /// Gets the position of the piece in the <paramref name="board"/>.
+        /// Gets the position of the piece in the <see cref="Board"/>.
         /// </summary>
-        /// <param name="board">The board to search for the piece.</param>
-        /// <returns>An </returns>
+        /// <returns>An <see cref="TwoDimensionPosition"/> revealing the position of the piece.</returns>
         /// <exception cref="NullReferenceException">Thrown when the piece is not in the <see cref="Board"/>.</exception>
-        public TwoDimensionPosition GetPosition(Board board)
+        public TwoDimensionPosition GetPosition()
         {
-            for (int row = 0; row < board.Rows; row++)
+            for (int row = 0; row < Board.Rows; row++)
             {
-                for (int column = 0; column < board.Columns; column++)
+                for (int column = 0; column < Board.Columns; column++)
                 {
-                    if (board.GetPiece(row, column) == this)
+                    if (Board.GetPiece(row, column) == this)
                     {
                         return new TwoDimensionPosition(column, row);
                     }
@@ -72,14 +78,14 @@ namespace Board
         /// Returns all the possible targets for this piece.
         /// </summary>
         /// <returns>An array of booleans with the same dimensions as the <see cref="Board"/>, where true positions mean a possible target on the board.</returns>
-        public virtual bool[,] PossibleTargets(Board board)
+        public virtual bool[,] PossibleTargets()
         {
-            var possibleTargets = new bool[board.Rows, board.Columns];
+            var possibleTargets = new bool[Board.Rows, Board.Columns];
             var movementSet = Movement.GetInvocationList();
 
             foreach (var movement in movementSet)
             {
-                possibleTargets = possibleTargets.Merge(movement.DynamicInvoke(this, board) as bool[,]);
+                possibleTargets = possibleTargets.Merge(movement.DynamicInvoke(this, Board) as bool[,]);
             }
 
             return possibleTargets;
