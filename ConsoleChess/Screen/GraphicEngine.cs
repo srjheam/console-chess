@@ -79,12 +79,18 @@ namespace Screen
             if (match.SelectedPiece is null)
                 PrintBoard(match.Board, 4);
             else
-                PrintBoard(match.Board, match.SelectedPiece.PossibleTargets(match.Board), 4);
+                PrintBoard(match.Board, match.SelectedPiece.PossibleTargets(), 4);
             Console.WriteLine();
 
             Console.WriteLine($"Turn: {match.Turn}");
             Console.Write("Team: ");
             PrintTeam(match.TeamPlaying);
+            if (match.Board.GetKing(match.TeamPlaying).IsInCheck)
+            {
+                Console.WriteLine();
+                Console.Write("      ");
+                PrintCheck(match.TeamPlaying);
+            }
             Console.WriteLine();
             Console.WriteLine();
 
@@ -94,8 +100,25 @@ namespace Screen
                 // Selected piece: P (e2)
                 Console.Write($"Selected piece: ");
                 PrintPiece(match.SelectedPiece);
-                Console.WriteLine($" ({ new BoardPosition(match.SelectedPiece.GetPosition(match.Board), match.Board)})");
+                Console.WriteLine($" ({ new BoardPosition(match.SelectedPiece.GetPosition(), match.Board)})");
             }
+        }
+
+        /// <summary>
+        /// Prints IN CHECK using the repective team colors.
+        /// </summary>
+        /// <param name="teamPlaying">The team that is in check.</param>
+        private static void PrintCheck(Team teamPlaying)
+        {
+            var tmp = (Console.BackgroundColor, Console.ForegroundColor);
+
+            var teamColors = GetTeamColors(teamPlaying);
+            Console.BackgroundColor = teamColors.BackgroundColor;
+            Console.ForegroundColor = teamColors.ForegroundColor;
+            Console.Write($" I N   C H E C K ");
+
+            Console.BackgroundColor = tmp.BackgroundColor;
+            Console.ForegroundColor = tmp.ForegroundColor;
         }
 
         /// <summary>

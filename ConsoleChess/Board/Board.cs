@@ -79,7 +79,7 @@ namespace Board
 
             foreach (var piece in queryResult)
             {
-                allPossibleTargets.Merge(piece.PossibleTargets(this));
+                allPossibleTargets = allPossibleTargets.Merge(piece.PossibleTargets());
             }
 
             return allPossibleTargets;
