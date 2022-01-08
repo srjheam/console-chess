@@ -14,7 +14,7 @@ namespace Chess.Pieces
         /// Constructor for a new <see cref="Rook"/>.
         /// </summary>
         /// <inheritdocs/>
-        public Rook(Team team, BoardSide side)
-            : base(team, side) { }
+        public Rook(ChessBoard board, BoardSide side, Team team)
+            : base(board, side, team) { }
     }
 }

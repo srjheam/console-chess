@@ -16,7 +16,7 @@ namespace Board
     abstract class Board
     {
         /// <value>Contains all the board squares with their respective content.</value>
-        private readonly Piece[,] squares;
+        public Piece[,] Squares { get; protected set; }
         /// <value>Gets the number of columns in the board.</value>
         public int Columns { get; }
         /// <value>Contains all the pieces on the board.</value>
@@ -37,7 +37,7 @@ namespace Board
                 throw new InvalidSizeBoardException("The board does not support width or height equal to or less than 0.");
             }
 
-            squares = new Piece[height, width];
+            Squares = new Piece[height, width];
             Columns = width;
             Rows = height;
 
@@ -47,10 +47,10 @@ namespace Board
         /// <summary>
         /// Moves a piece from a position of the board to another.
         /// </summary>
-        /// <param name="originRow">The origin row, in the array <see cref="squares"/>, where the piece will be removed from.</param>
-        /// <param name="originColumn">The origin column, in the array <see cref="squares"/>, where the piece will be removed from.</param>
-        /// <param name="targetRow">The target row, in the array <see cref="squares"/>, where the removed piece will be placed.</param>
-        /// <param name="targetColumn">The target column, in the array <see cref="squares"/>, where the removed piece will be placed.</param>
+        /// <param name="originRow">The origin row, in the array <see cref="Squares"/>, where the piece will be removed from.</param>
+        /// <param name="originColumn">The origin column, in the array <see cref="Squares"/>, where the piece will be removed from.</param>
+        /// <param name="targetRow">The target row, in the array <see cref="Squares"/>, where the removed piece will be placed.</param>
+        /// <param name="targetColumn">The target column, in the array <see cref="Squares"/>, where the removed piece will be placed.</param>
         public abstract void MovePiece(int originRow, int originColumn, int targetRow, int targetColumn);
         
         /// <summary>
@@ -79,7 +79,7 @@ namespace Board
 
             foreach (var piece in queryResult)
             {
-                allPossibleTargets.Merge(piece.PossibleTargets(this));
+                allPossibleTargets = allPossibleTargets.Merge(piece.PossibleTargets());
             }
 
             return allPossibleTargets;
@@ -90,17 +90,17 @@ namespace Board
         /// </summary>
         /// <param name="row">Row position in the array.</param>
         /// <param name="column">Column position in the array.</param>
-        /// <returns>Whatever is in the position <see cref="squares"/>[<paramref name="row"/>, <paramref name="column"/>].</returns>
+        /// <returns>Whatever is in the position <see cref="Squares"/>[<paramref name="row"/>, <paramref name="column"/>].</returns>
         public Piece GetPiece(int row, int column)
         {
-            return squares[row, column];
+            return Squares[row, column];
         }
 
         /// <summary>
         /// Gets whatever is in the position informed by the parameters.
         /// </summary>
         /// <param name="orderedPair">The position to get its value in the board.</param>
-        /// <returns>Whatever is in the position <see cref="squares"/>[<paramref name="row"/>, <paramref name="column"/>].</returns>
+        /// <returns>Whatever is in the position <see cref="Squares"/>[<paramref name="row"/>, <paramref name="column"/>].</returns>
         public Piece GetPiece(in TwoDimensionPosition orderedPair)
         {
             return GetPiece(orderedPair.Y, orderedPair.X);
@@ -120,25 +120,25 @@ namespace Board
         /// Places a <see cref="Piece"/> in the board.
         /// </summary>
         /// <param name="piece">The piece to be placed.</param>
-        /// <param name="row">The row in the array <see cref="squares"/>, where the piece will be placed.</param>
-        /// <param name="column">The column in the array <see cref="squares"/>, where the piece will be placed.</param>
+        /// <param name="row">The row in the array <see cref="Squares"/>, where the piece will be placed.</param>
+        /// <param name="column">The column in the array <see cref="Squares"/>, where the piece will be placed.</param>
         public void PlacePiece(Piece piece, int row, int column)
         {
-            squares[row, column] = piece;
+            Squares[row, column] = piece;
             Pieces.Add(piece);
         }
 
         /// <summary>
         /// Removes a piece from the board and returns it.
         /// </summary>
-        /// <param name="row">The row in the array <see cref="squares"/>, where the piece will be removed from.</param>
-        /// <param name="column">The column in the array <see cref="squares"/>, where the piece will be removed from.</param>
+        /// <param name="row">The row in the array <see cref="Squares"/>, where the piece will be removed from.</param>
+        /// <param name="column">The column in the array <see cref="Squares"/>, where the piece will be removed from.</param>
         /// <returns>The piece that have been removed.</returns>
         public Piece RemovePiece(int row, int column)
         {
             var piece = GetPiece(row, column);
 
-            squares[row, column] = null;
+            Squares[row, column] = null;
             Pieces.Remove(piece);
 
             return piece;
