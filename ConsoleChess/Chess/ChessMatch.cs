@@ -1,6 +1,7 @@
 ﻿using Board;
 using Board.Enums;
 
+using Chess.Enums;
 using Chess.Pieces;
 
 using Extensions;
@@ -23,6 +24,8 @@ namespace Chess
         public ChessBoard Board { get; }
         /// <value>Gets the selected piece, if one is selected.</value>
         public ChessPiece SelectedPiece { get; private set; }
+        /// <value>Gets the current state of the match.</value>
+        public GameStatus GameStatus;
         /// <value>Gets the turn the chess game is on.</value>
         public int Turn
         {
@@ -39,7 +42,8 @@ namespace Chess
         /// </summary>
         public ChessMatch()
         {
-            movementsMade = 0;
+            GameStatus = GameStatus.Playing;
+            movementsMade = 1;
             Board = new ChessBoard(this);
         }
 
@@ -50,9 +54,11 @@ namespace Chess
         {
             do
             {
-                NextTurn();
                 StartTurn();
-            } while (true);
+                NextTurn();
+            } while (GameStatus is GameStatus.Playing);
+            Console.Clear();
+            PrintMatchResults(this);
         }
 
         /// <summary>
@@ -80,6 +86,24 @@ namespace Chess
         {
             movementsMade++;
             SelectedPiece = null;
+
+            // TODO: Add remaining types of draw:
+            //          Dead position,
+            //          Mutual Agreement,
+            //          Threefold Repetition,
+            //          50-Move Rule
+            //           
+            if (!Board.GetAllPossibleTargets(TeamPlaying).HasTrue())
+            {
+                if (Board.GetKing(TeamPlaying).IsInCheck)
+                {
+                    GameStatus = GameStatus.Checkmate;
+                }
+                else
+                {
+                    GameStatus = GameStatus.Stalemate;
+                }
+            }
         }
 
         /// <summary>

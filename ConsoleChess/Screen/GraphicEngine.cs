@@ -105,6 +105,63 @@ namespace Screen
         }
 
         /// <summary>
+        /// Prints on the console the result of the <paramref name="match"/>.
+        /// </summary>
+        /// <param name="match">The match to print its result.</param>
+        public static void PrintMatchResults(ChessMatch match)
+        {
+            var titleLength = match.GameStatus.ToString().Length;
+            var winner = match.TeamPlaying == Team.Black ? Team.White : Team.Black;
+            var colors = GetTeamColors(winner);
+
+            if (match.GameStatus is Chess.Enums.GameStatus.Stalemate)
+            {
+                colors = (ConsoleColor.DarkBlue, ConsoleColor.DarkCyan);
+            }
+
+            var tmp = (Console.BackgroundColor, Console.ForegroundColor);
+            Console.BackgroundColor = colors.BackgroundColor;
+            Console.ForegroundColor = colors.ForegroundColor;
+
+            var spaces = new string(' ', (int)Math.Floor((18 - titleLength) / 2d));
+            Console.WriteLine();
+            Console.CursorLeft = 1;
+            Console.WriteLine(new string(' ', 18));
+            Console.CursorLeft = 1;
+            Console.WriteLine($"{new string(' ', (18 - titleLength) % 2)}{spaces}{match.GameStatus.ToString().ToUpper()}{spaces}");
+            Console.CursorLeft = 1;
+            Console.WriteLine(new string(' ', 18));
+            Console.WriteLine();
+
+            Console.BackgroundColor = tmp.BackgroundColor;
+            Console.ForegroundColor = tmp.ForegroundColor;
+
+            PrintBoard(match.Board, 4);
+
+            Console.BackgroundColor = colors.BackgroundColor;
+            Console.ForegroundColor = colors.ForegroundColor;
+
+            string message = String.Empty;
+            switch (match.GameStatus)
+            {
+                case Chess.Enums.GameStatus.Checkmate:
+                    message = $"{winner} wins!";
+                    break;
+                case Chess.Enums.GameStatus.Stalemate:
+                    message = "Game ends in a tie";
+                    break;
+            }
+            var messageLength = message.Length;
+            spaces = new string(' ', (int)Math.Floor((18 - messageLength) / 2d));
+            Console.WriteLine();
+            Console.CursorLeft = 1;
+            Console.WriteLine($"{new string(' ', (18 - messageLength) % 2)}{spaces}{message}{spaces}");
+
+            Console.BackgroundColor = tmp.BackgroundColor;
+            Console.ForegroundColor = tmp.ForegroundColor;
+        }
+
+        /// <summary>
         /// Prints IN CHECK using the repective team colors.
         /// </summary>
         /// <param name="teamPlaying">The team that is in check.</param>
