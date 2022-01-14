@@ -42,7 +42,43 @@ namespace Chess
             var origin = RemovePiece(originRow, originColumn);
             var target = RemovePiece(targetRow, targetColumn);
 
-            if (!(target is null))
+            var specialMove = false;
+
+            // Castling
+            if (origin is King && originRow == targetRow)
+            {
+                specialMove = true;
+                if (!(Math.Abs(originColumn - targetColumn) == 1 && !(target is Rook)))
+                {
+                    // Castling side delta
+                    var castlingDelta = targetColumn - originColumn > 0 ? 1 : -1;
+                    if (!(target is Rook))
+                    {
+                        // Search for Rook
+                        for (int column = originColumn + castlingDelta; column < Columns && column >= 0; column += castlingDelta)
+                        {
+                            var columnPiece = GetPiece(originRow, column);
+                            if (columnPiece is Rook)
+                            {
+                                target = columnPiece;
+                                Squares[originRow, column] = null;
+                                break;
+                            }
+                        }
+                    }
+
+                    target.Move();
+                    // Final column position of the Rook relative to the King's final position:
+                    //     -1 column if Kingside castling
+                    //     +1 column if Queenside castling
+                    var rookDelta = targetColumn - originColumn > 0 ? -1 : 1;
+                    // Place the Rook
+                    PlacePiece(target, targetRow, targetColumn + rookDelta);
+                }
+            }
+
+
+            if (!specialMove && !(target is null))
                 CapturedPieces.Add(target);
 
             origin.Move();
@@ -60,7 +96,7 @@ namespace Chess
             PlacePiece(new Bishop(this, BoardSide.Top, Team.Black), 0, 5);
             PlacePiece(new Knight(this, BoardSide.Top, Team.Black), 0, 6);
             PlacePiece(new Rook(this, BoardSide.Top, Team.Black), 0, 7);
-            
+
             // Places black pawns
             for (int column = 0; column < 8; column++)
             {

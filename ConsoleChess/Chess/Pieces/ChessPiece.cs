@@ -33,11 +33,11 @@ namespace Chess.Pieces
                 {
                     if (possibleTargets[i, j])
                     {
-
                         var tmpPos = GetPosition();
                         var tmpTarget = SimulSet(i, j);
 
-                        possibleTargets[i,j] = !SimulIsInCheck();
+                        var kPos = Board.GetKing(Team).GetPosition();
+                        possibleTargets[i,j] = !SimulIsUnderAttack(kPos.Y, kPos.X);
 
                         SimulUndo(tmpPos, tmpTarget);
                     }
@@ -67,39 +67,45 @@ namespace Chess.Pieces
                 // Replace this Piece
                 Board.Squares[origin.Y, origin.X] = this;
             }
-            bool SimulIsInCheck()
+        }
+
+        /// <summary>
+        /// Checks if the given position is target of a ennemy piece. Under simulation conditions.
+        /// </summary>
+        /// <param name="tRow">Ennemy target row to check.</param>
+        /// <param name="tColumn">Ennemy target column to check.</param>
+        /// <returns>True if the position is under attack; otherwise, it returns false.</returns>
+        protected bool SimulIsUnderAttack(int tRow, int tColumn)
+        {
+            var pieces = new HashSet<Piece>();
+            for (int i = 0; i < Board.Rows; i++)
             {
-                var pieces = new HashSet<Piece>();
-                for (int i = 0; i < Board.Rows; i++)
+                for (int j = 0; j < Board.Columns; j++)
                 {
-                    for (int j = 0; j < Board.Columns; j++)
+                    var piece = Board.Squares[i, j];
+                    if (piece != null)
                     {
-                        var piece = Board.Squares[i, j];
-                        if (piece != null)
-                        {
-                            pieces.Add(piece);
-                        }
+                        pieces.Add(piece);
                     }
                 }
-                var queryResult = pieces.Where(p => p.Team == (Team == Team.Black ? Team.White : Team.Black));
-
-                var ennemyTargets = new bool[Board.Rows, Board.Columns];
-                foreach (ChessPiece piece in queryResult)
-                {
-                    var targets = new bool[Board.Rows, Board.Columns];
-                    var movementSet = piece.Movement.GetInvocationList();
-
-                    foreach (var movement in movementSet)
-                    {
-                        targets = targets.Merge(movement.DynamicInvoke(piece, Board) as bool[,]);
-                    }
-
-                    ennemyTargets = ennemyTargets.Merge(targets);
-                }
-
-                var kPos = Board.GetKing(Team).GetPosition();
-                return ennemyTargets[kPos.Y, kPos.X];
             }
+            var queryResult = pieces.Where(p => p.Team == (Team == Team.Black ? Team.White : Team.Black));
+
+            var ennemyTargets = new bool[Board.Rows, Board.Columns];
+            foreach (ChessPiece piece in queryResult)
+            {
+                var targets = new bool[Board.Rows, Board.Columns];
+                var movementSet = piece.Movement.GetInvocationList();
+
+                foreach (var movement in movementSet)
+                {
+                    targets = targets.Merge(movement.DynamicInvoke(piece, Board) as bool[,]);
+                }
+
+                ennemyTargets = ennemyTargets.Merge(targets);
+            }
+
+            return ennemyTargets[tRow, tColumn];
         }
     }
 }
