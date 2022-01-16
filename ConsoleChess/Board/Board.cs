@@ -145,6 +145,16 @@ namespace Board
         }
 
         /// <summary>
+        /// Removes a piece from the board.
+        /// </summary>
+        /// <param name="piece">The piece to be removed from the board.</param>
+        public void RemovePiece(Piece piece)
+        {
+            var pos = piece.GetPosition();
+            RemovePiece(pos.Y, pos.X);
+        }
+
+        /// <summary>
         /// Place the pieces in their initial positions on the board.
         /// </summary>
         protected abstract void SetupBoard();
