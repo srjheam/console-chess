@@ -18,7 +18,10 @@ namespace Chess
     {
         /// <value>Gets the captured pieces during this match.</value>
         public List<Piece> CapturedPieces { get; } = new List<Piece>();
+        /// <value>Gets the ChessMatch this ChessBoard belongs to.</value>
         public ChessMatch ChessMatch { get; }
+        /// <value>Gets the pawn that might be vuberable to an en passant movement.</value>
+        public Pawn EnPassantVulnerable { get; private set; }
 
         /// <summary>
         /// Base constructor for a new standard chess board.
@@ -43,9 +46,22 @@ namespace Chess
             var target = RemovePiece(targetRow, targetColumn);
 
             var specialMove = false;
+            var pawnsDoubleStepForward = false;
+            if (origin is Pawn)
+            {
 
-            // Castling
-            if (origin is King && originRow == targetRow)
+                if (Math.Abs(originRow - targetRow) == 2) // First move, Double-step-forward 
+                {
+                    EnPassantVulnerable = origin as Pawn;
+                    pawnsDoubleStepForward = true;
+                }
+                else if (target is null && Math.Abs(originColumn - targetColumn) == 1)
+                {
+                    RemovePiece(EnPassantVulnerable);
+                    CapturedPieces.Add(EnPassantVulnerable);
+                }
+            }
+            else if (origin is King && originRow == targetRow) // Castling
             {
                 specialMove = true;
                 if (!(Math.Abs(originColumn - targetColumn) == 1 && !(target is Rook)))
@@ -77,9 +93,14 @@ namespace Chess
                 }
             }
 
+            if (!specialMove)
+            {                
+                if (!(target is null))
+                    CapturedPieces.Add(target);
+            }
 
-            if (!specialMove && !(target is null))
-                CapturedPieces.Add(target);
+            if (!pawnsDoubleStepForward)
+                EnPassantVulnerable = null;
 
             origin.Move();
             PlacePiece(origin, targetRow, targetColumn);
