@@ -53,19 +53,28 @@ namespace Screen
         }
 
         /// <summary>
-        /// Cleans the actual cursor row and prints an error just in the row which the cursor is.
+        /// Cleans the actual cursor row and prints an error message just in the row which the cursor is.
         /// </summary>
-        /// <param name="error">The error to be printed.</param>
-        public static void ShowOneLineError(Exception error)
+        /// <param name="ex">The message to be printed.</param>
+        public static void ShowOneLineError(string message)
         {
             CleanConsoleRow(Console.CursorTop);
 
-            Console.Write(error.Message);
+            Console.Write(message);
             Console.ReadKey(true);
 
             CleanConsoleRow(Console.CursorTop);
 
             Console.CursorLeft = 0;
+        }
+
+        /// <summary>
+        /// Cleans the actual cursor row and prints an error just in the row which the cursor is.
+        /// </summary>
+        /// <param name="ex">The error as an exception to be printed.</param>
+        public static void ShowOneLineError(Exception ex)
+        {
+            ShowOneLineError(ex.Message);
         }
 
         /// <summary>
@@ -102,8 +111,28 @@ namespace Screen
                 PrintPiece(match.SelectedPiece);
                 Console.WriteLine($" ({ new BoardPosition(match.SelectedPiece.GetPosition(), match.Board)})");
             }
+            if (!(match.SelectedTarget is null))
+            {
+                // Example:
+                // Selected target: P (e2)
+                Console.Write($"Selected target: ");
+                PrintPiece(match.Board.GetPiece(match.SelectedTarget.Value));
+                Console.WriteLine($" ({ new BoardPosition(match.SelectedPiece.GetPosition(), match.Board)})");
+            }
         }
 
+        /// <summary>
+        /// Prints on the console all the valid options for a pawn promotion special move.
+        /// </summary>
+        public static void PrintPawnPromotionOptions()
+        {
+            Console.WriteLine("Pawn promotion options");
+            Console.WriteLine("Q - Queen");
+            Console.WriteLine("N - Knight");
+            Console.WriteLine("R - Rook");
+            Console.WriteLine("B - Bishop");
+        }
+        
         /// <summary>
         /// Prints on the console the result of the <paramref name="match"/>.
         /// </summary>
