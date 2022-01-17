@@ -47,18 +47,22 @@ namespace Chess
 
             var specialMove = false;
             var pawnsDoubleStepForward = false;
+            var incomingPromotion = false;
             if (origin is Pawn)
             {
-
                 if (Math.Abs(originRow - targetRow) == 2) // First move, Double-step-forward 
                 {
                     EnPassantVulnerable = origin as Pawn;
                     pawnsDoubleStepForward = true;
                 }
-                else if (target is null && Math.Abs(originColumn - targetColumn) == 1)
+                else if (target is null && Math.Abs(originColumn - targetColumn) == 1) // En passant
                 {
                     RemovePiece(EnPassantVulnerable);
                     CapturedPieces.Add(EnPassantVulnerable);
+                }
+                else if (origin.Side == BoardSide.Bottom && targetRow == 0 || origin.Side == BoardSide.Top && targetRow == Rows - 1) // Promotion
+                {
+                    incomingPromotion = true;
                 }
             }
             else if (origin is King && originRow == targetRow) // Castling
@@ -104,6 +108,9 @@ namespace Chess
 
             origin.Move();
             PlacePiece(origin, targetRow, targetColumn);
+
+            if (incomingPromotion)
+                OnPawnPromoting(origin as Pawn);
         }
 
         protected sealed override void SetupBoard()
@@ -141,5 +148,10 @@ namespace Chess
             PlacePiece(new Rook(this, BoardSide.Bottom, Team.White), 7, 7);
             #endregion
         }
+
+        private void OnPawnPromoting(Pawn e) =>
+            PawnPromoting?.Invoke(this, e);
+
+        public event EventHandler<Pawn> PawnPromoting;
     }
 }

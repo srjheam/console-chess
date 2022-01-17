@@ -15,7 +15,7 @@ namespace Screen
         /// </summary>
         /// <param name="message">An informational message about what the input is.</param>
         /// <returns>The user input converted to BoardPosition.</returns>
-        public static BoardPosition RequestInput(in string message)
+        public static BoardPosition RequestBoardPositionInput(in string message)
         {
             BoardPosition result;
             
@@ -28,12 +28,35 @@ namespace Screen
             {
                 GraphicEngine.ShowOneLineError(e);
 
-                return RequestInput(message);
+                return RequestBoardPositionInput(message);
             }
 
             return result;
         }
-        
+
+        /// <summary>
+        /// Requests a pawn promotion option input from the user.
+        /// </summary>
+        /// <param name="message">An informational message about what the input is.</param>
+        /// <returns>The user input verified as a valid pawn promotion option.</returns>
+        public static char RequestPawnPromotionOptionInput(in string message)
+        {
+            while (true)
+            {
+                var input = GraphicEngine.RequestUserInput(message);
+                input = input.ToLower();
+
+                if (input.Length != 1 || !"qnrb".Contains(input))
+                {
+                    GraphicEngine.ShowOneLineError($"The user input \"{input}\" is not a valid option.");
+                }
+                else
+                {
+                    return input[0];
+                }
+            }
+        }
+
         /// <summary>
         /// Converts the <paramref name="input"/> to its equivalent <see cref="BoardPosition"/>.
         /// </summary>
