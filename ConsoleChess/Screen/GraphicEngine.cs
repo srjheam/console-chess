@@ -16,6 +16,8 @@ namespace Screen
     {
         /// <value>Gets the highlight background color.</value>
         private const ConsoleColor highlightBackground = ConsoleColor.DarkGray;
+        /// <value>Gets the In Check background color.</value>
+        private const ConsoleColor inCheckBackground = ConsoleColor.DarkRed;
 
         /// <summary>
         /// Cleans just one row of the console.
@@ -357,6 +359,10 @@ namespace Screen
 
             if (highlight)
                 Console.BackgroundColor = highlightBackground;
+            if (p is Chess.Pieces.King king && king.IsInCheck)
+            {
+                Console.BackgroundColor = inCheckBackground;
+            }
 
             PrintPiece(p);
 
