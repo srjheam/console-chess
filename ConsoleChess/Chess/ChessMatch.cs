@@ -62,6 +62,7 @@ namespace Chess
             } while (GameStatus is GameStatus.Playing);
             Console.Clear();
             PrintMatchResults(this);
+            Console.ReadKey(true);
         }
 
         /// <summary>
